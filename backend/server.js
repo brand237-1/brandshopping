@@ -24,6 +24,10 @@ app.use((req, res, next) => {
     console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
     next();
 });
+
+// Early Health Check for Hosting
+app.get('/healthz', (req, res) => res.status(200).send('OK'));
+app.get('/api/health', (req, res) => res.json({ status: 'healthy', version: '3.1.2', timestamp: new Date() }));
 app.use('/uploads', express.static(path.join(__dirname, 'public/uploads')));
 app.use('/pictures', express.static(path.join(__dirname, '..', 'pictures')));
 
