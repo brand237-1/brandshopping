@@ -6,6 +6,7 @@ import { Helmet, HelmetProvider } from 'react-helmet-async';
 import debounce from 'lodash.debounce';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
+import AdminLogin from './components/AdminLogin';
 import AdminDashboard from './components/AdminDashboard';
 
 // --- CONTEXTS ---
