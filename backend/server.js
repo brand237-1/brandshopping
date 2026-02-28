@@ -497,7 +497,7 @@ app.use('/api', (req, res) => {
 const frontendPath = path.join(__dirname, '..', 'frontend', 'dist');
 app.use(express.static(frontendPath));
 
-app.get('*', (req, res) => {
+app.get('(.*)', (req, res) => {
     // If it's not an API route, serve the frontend
     if (!req.url.startsWith('/api')) {
         res.sendFile(path.join(frontendPath, 'index.html'));
