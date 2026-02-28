@@ -481,9 +481,7 @@ app.get('/api/health', (req, res) => {
     res.json({ status: 'running', version: '3.1.2', timestamp: new Date().toISOString() });
 });
 
-app.get('/', (req, res) => {
-    res.send('BrandshoppingLTD API v3.1.2 (Diagnostics Enabled) is running...');
-});
+// Root '/' is now served by express.static(frontendPath) below
 
 // Final 404 Catch-all for API
 // Using /api as a prefix here since it's the last middleware, 
