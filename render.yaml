@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: brandshopping-ltd
+    runtime: node
+    plan: free
+    buildCommand: npm run build
+    startCommand: npm run start
+    envVars:
+      - key: NODE_VERSION
+        value: 20
+      - key: JWT_SECRET
+        generateValue: true
+      - key: ADMIN_EMAIL
+        sync: false
+      - key: ADMIN_PASS
+        sync: false
+      - key: FRONTEND_URL
+        value: https://brandshopping-ltd.onrender.com
+      - key: DATABASE_URL
+        value: file:./prisma/dev.db
