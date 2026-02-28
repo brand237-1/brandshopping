@@ -45,7 +45,7 @@ const AdminDashboard = () => {
     const fetchChatHistory = async () => {
         const token = localStorage.getItem('adminToken');
         try {
-            const res = await fetch(`http://localhost:3000/api/admin/messages/${selectedUserId}`, {
+            const res = await fetch(`/api/admin/messages/${selectedUserId}`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             const data = await res.json();
@@ -56,7 +56,7 @@ const AdminDashboard = () => {
     const fetchStats = async () => {
         const token = localStorage.getItem('adminToken');
         try {
-            const res = await fetch('http://localhost:3000/api/admin/stats', {
+            const res = await fetch('/api/admin/stats', {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             const data = await res.json();
@@ -67,7 +67,7 @@ const AdminDashboard = () => {
     const fetchOrders = async () => {
         const token = localStorage.getItem('adminToken');
         try {
-            const res = await fetch('http://localhost:3000/api/admin/orders', {
+            const res = await fetch('/api/admin/orders', {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             const data = await res.json();
@@ -77,7 +77,7 @@ const AdminDashboard = () => {
 
     const fetchProducts = async () => {
         try {
-            const response = await fetch('http://localhost:3000/api/products');
+            const response = await fetch('/api/products');
             const data = await response.json();
             setProducts(data);
         } catch (err) { console.error(err); }
@@ -86,7 +86,7 @@ const AdminDashboard = () => {
     const fetchUsers = async () => {
         const token = localStorage.getItem('adminToken');
         try {
-            const response = await fetch('http://localhost:3000/api/admin/users', {
+            const response = await fetch('/api/admin/users', {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             const data = await response.json();
@@ -97,7 +97,7 @@ const AdminDashboard = () => {
     const fetchPassRequests = async () => {
         const token = localStorage.getItem('adminToken');
         try {
-            const response = await fetch('http://localhost:3000/api/admin/password-requests', {
+            const response = await fetch('/api/admin/password-requests', {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             const data = await response.json();
@@ -124,7 +124,7 @@ const AdminDashboard = () => {
         if (image) formData.append('image', image);
 
         try {
-            const response = await fetch('http://localhost:3000/api/admin/products', {
+            const response = await fetch('/api/admin/products', {
                 method: 'POST',
                 headers: { 'Authorization': `Bearer ${token}` },
                 body: formData,
@@ -142,7 +142,7 @@ const AdminDashboard = () => {
     const handleSendPass = async (userId, password) => {
         const token = localStorage.getItem('adminToken');
         try {
-            const res = await fetch('http://localhost:3000/api/admin/send-password', {
+            const res = await fetch('/api/admin/send-password', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -162,7 +162,7 @@ const AdminDashboard = () => {
         if (!selectedUserId || !messageContent) return;
         const token = localStorage.getItem('adminToken');
         try {
-            const res = await fetch('http://localhost:3000/api/admin/messages', {
+            const res = await fetch('/api/admin/messages', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -183,7 +183,7 @@ const AdminDashboard = () => {
         if (!isGlobalNotif && !selectedUserId) return;
         const token = localStorage.getItem('adminToken');
         try {
-            const res = await fetch('http://localhost:3000/api/admin/notifications', {
+            const res = await fetch('/api/admin/notifications', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -300,7 +300,7 @@ const AdminDashboard = () => {
                                     {products.map(p => (
                                         <tr key={p.id}>
                                             <td className="px-6 py-4 flex items-center gap-4">
-                                                <img src={`http://localhost:3000${p.imagePath}`} className="w-12 h-12 object-cover rounded" alt="" />
+                                                <img src={`${p.imagePath}`} className="w-12 h-12 object-cover rounded" alt="" />
                                                 <span className="font-bold">{p.name}</span>
                                             </td>
                                             <td className="px-6 py-4 font-bold text-[10px] uppercase text-gray-400">{p.category}</td>

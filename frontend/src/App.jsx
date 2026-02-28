@@ -146,7 +146,7 @@ const SearchBar = ({ onSearch }) => {
           >
             {suggestions.map(p => (
               <div key={p.id} className="flex items-center gap-4 p-3 hover:bg-gray-50 cursor-pointer border-b last:border-0" onClick={() => setShow(false)}>
-                <img src={`${API_BASE_URL || 'http://localhost:3000'}${p.imagePath}`} className="w-10 h-10 object-cover rounded" alt="" />
+                <img src={`${API_BASE_URL || ''}${p.imagePath}`} className="w-10 h-10 object-cover rounded" alt="" />
                 <div>
                   <p className="text-[10px] font-bold uppercase tracking-tight">{p.name}</p>
                   <p className="text-[10px] text-crimson font-bold">${p.price.toFixed(2)}</p>
@@ -234,9 +234,9 @@ const Navbar = () => {
 
 const HeroCarousel = () => {
   const images = [
-    "http://localhost:3000/pictures/posts/luxury-silk-dress.png",
-    "http://localhost:3000/pictures/posts/designer-wool-coat.png",
-    "http://localhost:3000/pictures/posts/luxury-accessories-set.png"
+    "/pictures/posts/luxury-silk-dress.png",
+    "/pictures/posts/designer-wool-coat.png",
+    "/pictures/posts/luxury-accessories-set.png"
   ];
   const [current, setCurrent] = useState(0);
 
@@ -303,7 +303,7 @@ const ProductCard = ({ product }) => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const imagePath = product.imagePath || '';
-  const imgUrl = imagePath.startsWith('http') ? imagePath : `${API_BASE_URL || 'http://localhost:3000'}${imagePath}`;
+  const imgUrl = imagePath.startsWith('http') ? imagePath : `${API_BASE_URL || ''}${imagePath}`;
 
   const structuredData = {
     "@context": "https://schema.org/",
@@ -411,7 +411,7 @@ const LiveChat = () => {
     }
 
     try {
-      const res = await fetch('http://localhost:3000/api/messages', {
+      const res = await fetch('/api/messages', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
         body: JSON.stringify({ content: inputMessage })
@@ -617,7 +617,7 @@ const CollectionPage = () => {
     if (!user) return;
     setLoading(true);
     const token = localStorage.getItem('userToken');
-    fetch(`http://localhost:3000/api/products?category=${category}`, {
+    fetch(`/api/products?category=${category}`, {
       headers: { 'Authorization': `Bearer ${token}` }
     })
       .then(res => res.json())
@@ -676,7 +676,7 @@ const ProductDetailPage = () => {
       .then(res => res.json())
       .then(data => {
         setProduct(data);
-        const initialImg = data.imagePath.startsWith('http') ? data.imagePath : `${API_BASE_URL || 'http://localhost:3000'}${data.imagePath}`;
+        const initialImg = data.imagePath.startsWith('http') ? data.imagePath : `${API_BASE_URL || ''}${data.imagePath}`;
         setActiveImage(initialImg);
         setLoading(false);
       });
@@ -736,7 +736,7 @@ const ProductDetailPage = () => {
           {hasGallery && (
             <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide">
               {gallery.map((img, idx) => {
-                const url = img.startsWith('http') ? img : `${API_BASE_URL || 'http://localhost:3000'}${img}`;
+                const url = img.startsWith('http') ? img : `${API_BASE_URL || ''}${img}`;
                 return (
                   <motion.button
                     key={idx}
@@ -1114,7 +1114,7 @@ const ProfilePage = () => {
   const handleUpdateProfile = async (e) => {
     e.preventDefault();
     const token = localStorage.getItem('userToken');
-    const res = await fetch('http://localhost:3000/api/profile', {
+    const res = await fetch('/api/profile', {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
       body: JSON.stringify(profileForm)
@@ -1197,7 +1197,7 @@ const ProfilePage = () => {
           <div className="space-y-6">
             {cart.map(item => (
               <div key={item.id} className="flex gap-6 border-b border-gray-100 pb-6 items-center">
-                <img src={item.imagePath.startsWith('http') ? item.imagePath : `${API_BASE_URL || 'http://localhost:3000'}${item.imagePath}`} className="w-20 h-24 object-cover rounded" alt="" />
+                <img src={item.imagePath.startsWith('http') ? item.imagePath : `${API_BASE_URL || ''}${item.imagePath}`} className="w-20 h-24 object-cover rounded" alt="" />
                 <div className="flex-1">
                   <p className="text-[10px] font-black uppercase text-gray-400">{item.brand}</p>
                   <h4 className="font-bold text-sm uppercase">{item.name}</h4>
