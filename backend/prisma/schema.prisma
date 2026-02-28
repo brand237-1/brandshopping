@@ -1,0 +1,76 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Product {
+  id          Int      @id @default(autoincrement())
+  name        String
+  brand       String?
+  price       Float
+  oldPrice    Float?
+  category    String   @default("Clothing")
+  description String?
+  imagePath   String
+  gallery     String?  @default("[]")
+  sizes       String?  @default("[]")
+  colors      String?  @default("[]")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Admin {
+  id       Int    @id @default(autoincrement())
+  email    String @unique
+  password String
+}
+
+model User {
+  id                Int      @id @default(autoincrement())
+  email             String   @unique
+  password          String
+  name              String?
+  generatedUsername String   @unique
+  bio               String?
+  address           String?
+  isVerified        Boolean  @default(true)
+  password_request  Boolean  @default(false)
+  cart              String?  @default("[]")
+  createdAt         DateTime @default(now())
+  messages          Message[]  @relation("UserMessages")
+  orders            Order[]
+}
+
+model Message {
+  id         Int      @id @default(autoincrement())
+  content    String
+  senderId   Int      
+  receiverId Int?
+  createdAt  DateTime @default(now())
+  user       User?    @relation("UserMessages", fields: [receiverId], references: [id])
+}
+
+model Order {
+  id            Int      @id @default(autoincrement())
+  userId        Int
+  paymentMethod String
+  address       String?
+  total         Float
+  status        String   @default("Pending")
+  items         String   // JSON string of cart items
+  createdAt     DateTime @default(now())
+  user          User     @relation(fields: [userId], references: [id])
+}
+
+model Notification {
+  id        Int      @id @default(autoincrement())
+  content   String
+  userId    Int?     // Null means sent to all users
+  isGlobal  Boolean  @default(false)
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
