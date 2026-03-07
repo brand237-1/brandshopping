@@ -186,11 +186,11 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 h-16 md:h-20 flex items-center justify-between gap-4 md:gap-8">
         <div className="flex items-center gap-4 md:gap-8">
           <button
-            className="md:hidden text-brand-black p-2 -ml-2 hover:bg-black/5 rounded-full transition-colors"
+            className="md:hidden text-brand-black p-3 -ml-2 hover:bg-black/5 rounded-full transition-colors active:scale-95"
             onClick={() => setIsOpen(!isOpen)}
             aria-label="Toggle Menu"
           >
-            {isOpen ? <X size={20} /> : <Menu size={20} />}
+            {isOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
 
           <Link to="/" className="flex items-center gap-2 group transition-all" onClick={() => setIsOpen(false)}>
@@ -198,8 +198,8 @@ const Navbar = () => {
               <span className="text-white font-black text-lg md:text-xl italic">B</span>
             </div>
             <div className="flex flex-col -gap-1">
-              <span className="text-base md:text-xl font-black tracking-tighter uppercase leading-none">Brandshoping✨</span>
-              <span className="text-[6px] md:text-[8px] font-bold tracking-[0.4em] uppercase opacity-50 ml-0.5">Limited Luxury</span>
+              <span className="text-lg md:text-xl font-black tracking-tighter uppercase leading-none">Brandshoping✨</span>
+              <span className="text-[7px] md:text-[8px] font-bold tracking-[0.4em] uppercase opacity-50 ml-0.5">Limited Luxury</span>
             </div>
           </Link>
 
@@ -238,9 +238,9 @@ const Navbar = () => {
             )}
           </div>
 
-          <Link to="/profile" className="relative cursor-pointer group p-2 rounded-full hover:bg-black/5 transition-colors">
-            <ShoppingBag className="w-5 h-5 md:w-6 md:h-6 group-hover:text-deep-crimson transition-colors" />
-            <span className="absolute top-0 right-0 bg-deep-crimson text-white text-[8px] w-4 h-4 rounded-full flex items-center justify-center font-black shadow-lg">
+          <Link to="/profile" className="relative cursor-pointer group p-3 rounded-full hover:bg-black/5 transition-colors active:scale-95">
+            <ShoppingBag className="w-6 h-6 md:w-6 md:h-6 group-hover:text-deep-crimson transition-colors" />
+            <span className="absolute top-1 right-1 bg-deep-crimson text-white text-[8px] w-5 h-5 rounded-full flex items-center justify-center font-black shadow-lg">
               {cart.reduce((sum, item) => sum + item.quantity, 0)}
             </span>
           </Link>
@@ -254,9 +254,9 @@ const Navbar = () => {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-white/95 backdrop-blur-xl border-b border-gray-100 overflow-hidden shadow-2xl"
+            className="md:hidden bg-white/98 backdrop-blur-2xl border-b border-gray-100 overflow-hidden shadow-2xl"
           >
-            <div className="container-mobile py-8 flex flex-col gap-1">
+            <div className="container-mobile py-10 flex flex-col gap-2">
               {items.map((item, idx) => (
                 <motion.div
                   key={item.name}
@@ -266,16 +266,16 @@ const Navbar = () => {
                 >
                   <Link
                     to={item.path}
-                    className={`block py-4 px-6 rounded-2xl text-xs font-black uppercase tracking-[0.2em] transition-all flex items-center justify-between group ${location.pathname === item.path ? 'bg-pink-accent text-deep-crimson shadow-sm' : 'hover:bg-off-white'}`}
+                    className={`block py-5 px-8 rounded-2xl text-sm font-black uppercase tracking-[0.2em] transition-all flex items-center justify-between group ${location.pathname === item.path ? 'bg-pink-accent text-deep-crimson shadow-sm' : 'hover:bg-off-white'}`}
                     onClick={() => setIsOpen(false)}
                   >
                     {item.name}
-                    <ArrowRight size={14} className="opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
+                    <ArrowRight size={18} className="opacity-40 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
                   </Link>
                 </motion.div>
               ))}
 
-              <div className="h-[1px] bg-gray-50 my-4 mx-6" />
+              <div className="h-[1px] bg-gray-100 my-6 mx-8" />
 
               <motion.div
                 initial={{ x: -20, opacity: 0 }}
@@ -284,11 +284,11 @@ const Navbar = () => {
               >
                 <Link
                   to="/profile"
-                  className="block py-4 px-6 rounded-2xl text-xs font-black uppercase tracking-[0.2em] hover:bg-off-white flex items-center justify-between"
+                  className="block py-5 px-8 rounded-2xl text-sm font-black uppercase tracking-[0.2em] hover:bg-off-white flex items-center justify-between"
                   onClick={() => setIsOpen(false)}
                 >
                   <span>👤 My Essence (Profile)</span>
-                  <ArrowRight size={14} />
+                  <ArrowRight size={18} className="opacity-40" />
                 </Link>
               </motion.div>
 
@@ -299,22 +299,31 @@ const Navbar = () => {
               >
                 <Link
                   to={adminItem.path}
-                  className="mt-4 block py-5 px-6 rounded-3xl bg-brand-black text-white text-xs font-black uppercase tracking-[0.3em] text-center shadow-xl shadow-black/20 group"
+                  className="mt-6 block py-6 px-8 rounded-3xl bg-brand-black text-white text-sm font-black uppercase tracking-[0.3em] text-center shadow-2xl shadow-black/20 group active:scale-[0.98]"
                   onClick={() => setIsOpen(false)}
                 >
                   {adminItem.name} ✨
                 </Link>
               </motion.div>
 
-              {user && (
+              {user ? (
                 <motion.button
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   onClick={() => { logout(); setIsOpen(false); }}
-                  className="mt-8 text-[9px] font-black uppercase tracking-widest text-brand-gray/40 text-center w-full hover:text-deep-crimson transition-colors"
+                  className="mt-10 py-4 text-xs font-black uppercase tracking-widest text-brand-gray/40 text-center w-full hover:text-deep-crimson transition-colors"
                 >
                   Sign Out of Sanctuary
                 </motion.button>
+              ) : (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="mt-10 flex border-t border-gray-100 pt-10 px-8 justify-around gap-4"
+                >
+                  <Link to="/login" className="text-[10px] font-black uppercase tracking-widest text-deep-crimson" onClick={() => setIsOpen(false)}>Login</Link>
+                  <Link to="/signup" className="text-[10px] font-black uppercase tracking-widest text-brand-black" onClick={() => setIsOpen(false)}>Join Club</Link>
+                </motion.div>
               )}
             </div>
           </motion.div>
@@ -338,7 +347,7 @@ const HeroCarousel = () => {
   }, [slides.length]);
 
   return (
-    <section className="relative h-[70vh] md:h-[90vh] overflow-hidden bg-brand-black">
+    <section className="relative h-[75vh] md:h-[90vh] overflow-hidden bg-brand-black">
       <AnimatePresence mode="wait">
         <motion.div
           key={idx}
@@ -348,7 +357,7 @@ const HeroCarousel = () => {
           transition={{ duration: 1.5, ease: "easeInOut" }}
           className="absolute inset-0"
         >
-          <div className="absolute inset-0 bg-gradient-to-t from-brand-black/90 via-black/20 to-brand-black/40 z-10" />
+          <div className="absolute inset-0 bg-gradient-to-t from-brand-black/90 via-black/10 to-brand-black/40 z-10" />
           <motion.img
             src={slides[idx].image}
             className="w-full h-full object-cover animate-slow-zoom"
@@ -359,7 +368,7 @@ const HeroCarousel = () => {
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.5, duration: 0.8 }}
-              className="text-white/80 font-bold tracking-[0.5em] text-[8px] md:text-[10px] uppercase mb-4"
+              className="text-white/90 font-black tracking-[0.4em] text-[10px] md:text-[10px] uppercase mb-6"
             >
               {slides[idx].category} ✨
             </motion.p>
@@ -367,7 +376,7 @@ const HeroCarousel = () => {
               initial={{ y: 30, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.7, duration: 1 }}
-              className="text-white text-4xl sm:text-6xl md:text-9xl font-black tracking-tighter serif mb-8 leading-[0.9]"
+              className="text-white text-5xl sm:text-7xl md:text-9xl font-black tracking-tighter serif mb-10 leading-[0.85]"
             >
               {slides[idx].title.split(' ').map((word, i) => (
                 <span key={i} className="block last:text-deep-crimson italic">{word}</span>
@@ -380,9 +389,9 @@ const HeroCarousel = () => {
             >
               <Link
                 to="/collection/New Arrivals"
-                className="group relative inline-flex items-center gap-4 bg-white text-brand-black px-8 md:px-10 py-4 md:py-5 rounded-full font-black text-[10px] md:text-xs uppercase tracking-widest hover:bg-deep-crimson hover:text-white transition-all overflow-hidden shadow-2xl"
+                className="group relative inline-flex items-center gap-4 bg-white text-brand-black px-10 md:px-12 py-5 md:py-6 rounded-full font-black text-xs uppercase tracking-[0.2em] hover:bg-deep-crimson hover:text-white transition-all overflow-hidden shadow-2xl active:scale-95"
               >
-                <span className="relative z-10 flex items-center gap-2 text-brand-black group-hover:text-white">Explore Drop 🛍️ <ArrowRight size={16} /></span>
+                <span className="relative z-10 flex items-center gap-2">Explore Drop 🛍️ <ArrowRight size={18} /></span>
                 <div className="absolute inset-0 bg-white group-hover:bg-deep-crimson transition-colors" />
               </Link>
             </motion.div>
@@ -390,12 +399,12 @@ const HeroCarousel = () => {
         </motion.div>
       </AnimatePresence>
 
-      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-30 flex gap-2 md:gap-3">
+      <div className="absolute bottom-12 left-1/2 -translate-x-1/2 z-30 flex gap-3">
         {slides.map((_, i) => (
           <button
             key={i}
             onClick={() => setIdx(i)}
-            className={`h-1 transition-all duration-500 rounded-full ${i === idx ? 'w-8 md:w-12 bg-white' : 'w-2 md:w-4 bg-white/30 hover:bg-white/50'}`}
+            className={`h-1.5 transition-all duration-500 rounded-full ${i === idx ? 'w-10 md:w-16 bg-white' : 'w-3 md:w-6 bg-white/20 hover:bg-white/40'}`}
           />
         ))}
       </div>

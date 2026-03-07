@@ -22,9 +22,18 @@
     background-color: var(--color-off-white);
     color: var(--color-brand-black);
     -webkit-font-smoothing: antialiased;
-    /* Responsive base spacing */
-    --padding-mobile: 1rem;
+    /* Responsive base spacing - Reduced for mobile-first zoom */
+    --padding-mobile: 0.75rem;
     --padding-desktop: 2rem;
+    font-size: 16px;
+    /* Base zoom */
+}
+
+@media (max-width: 480px) {
+    :root {
+        font-size: 18px;
+        /* Auto-zoom for mobile visibility */
+    }
 }
 
 /* Mobile-First Layout Core */
@@ -41,6 +50,8 @@ img,
 video,
 canvas,
 svg {
+    width: 100% !important;
+    /* Force 100% width scaling as requested */
     max-width: 100%;
     height: auto;
     display: block;
@@ -48,15 +59,17 @@ svg {
 
 .container-mobile {
     width: 100%;
-    padding-left: var(--padding-mobile);
-    padding-right: var(--padding-mobile);
+    padding-left: 0;
+    /* Full bleed on absolute mobile */
+    padding-right: 0;
     margin-left: auto;
     margin-right: auto;
 }
 
 @media (min-width: 360px) {
     .container-mobile {
-        max-width: 360px;
+        padding-left: var(--padding-mobile);
+        padding-right: var(--padding-mobile);
     }
 }
 
