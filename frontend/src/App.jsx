@@ -439,6 +439,21 @@ const ProductCard = ({ product }) => {
         />
 
         <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+
+        <AnimatePresence>
+          {hovered && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 20 }}
+              className="absolute bottom-4 left-4 right-4 z-20"
+            >
+              <button className="w-full bg-brand-black/90 backdrop-blur-md text-white text-[10px] font-black uppercase tracking-widest py-4 rounded-xl shadow-2xl hover:bg-deep-crimson transition-colors border border-white/10">
+                View & Buy 🛍️
+              </button>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
 
       <div className="p-4 md:p-6 flex-1 flex flex-col">
@@ -468,60 +483,7 @@ const ProductCard = ({ product }) => {
     </motion.div>
   );
 };
-<div className="absolute top-4 right-4 z-10">
-  <button
-    className="w-10 h-10 bg-white/80 backdrop-blur-md rounded-full flex items-center justify-center text-gray-400 hover:text-deep-crimson transition-colors shadow-sm"
-    onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
-  >
-    <Heart size={18} />
-  </button>
-</div>
-{
-  product.isNew && (
-    <div className="absolute top-4 left-4 z-10 bg-deep-crimson text-white text-[8px] font-black px-3 py-1.5 rounded-full tracking-widest uppercase shadow-lg">
-      New Arrival ✨
-    </div>
-  )
-}
-<AnimatePresence>
-  {hovered && (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: 20 }}
-      className="absolute bottom-4 left-4 right-4 z-20"
-    >
-      <button className="w-full bg-brand-black/90 backdrop-blur-md text-white text-[10px] font-black uppercase tracking-widest py-4 rounded-xl shadow-2xl hover:bg-deep-crimson transition-colors border border-white/10">
-        View & Buy 🛍️
-      </button>
-    </motion.div>
-  )}
-</AnimatePresence>
-      </div >
 
-  <div className="p-5 flex flex-col gap-2 bg-white">
-    <div className="flex justify-between items-start">
-      <h3 className="text-sm font-black tracking-tight serif group-hover:text-deep-crimson transition-colors truncate pr-2">
-        {product.name}
-      </h3>
-      <p className="text-xs font-black text-deep-crimson tracking-tighter shrink-0">
-        ${product.price ? Number(product.price).toFixed(2) : '0.00'}
-      </p>
-    </div>
-    <div className="flex items-center justify-between">
-      <p className="text-[10px] text-brand-gray font-medium uppercase tracking-widest opacity-60">
-        {JSON.parse(product.colors || '["Refined"]').length} Colors 🌈
-      </p>
-      <p className="text-[10px] text-brand-gray font-medium uppercase tracking-widest opacity-60 italic">
-        {sizes.length} Sizes
-      </p>
-    </div>
-  </div>
-    </motion.div >
-  );
-};
-
-// --- CHAT WIDGET ---
 // --- CHAT WIDGET ---
 const LiveChat = () => {
   const [isOpen, setIsOpen] = useState(false);
