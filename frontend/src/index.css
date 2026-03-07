@@ -1,43 +1,84 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Outfit:wght@100..900&display=swap');
 @import "tailwindcss";
 
 @theme {
-    --color-brand-black: #000000;
-    --color-brand-gray: #4B5563;
-    --color-brand-white: #FFFFFF;
-    --color-brand-crimson: #D00000;
+    /* Cute & Professional Palette */
+    --color-soft-pink: #FFF0F6;
+    --color-deep-crimson: #900000;
+    --color-off-white: #FAFAFA;
+    --color-gold: #D4AF37;
+    --color-brand-black: #0A0A0A;
+    --color-brand-gray: #71717A;
 }
 
 :root {
-    font-family: 'Inter', system-ui, sans-serif;
-    background-color: var(--color-brand-white);
+    font-family: 'Outfit', system-ui, sans-serif;
+    background-color: var(--color-off-white);
     color: var(--color-brand-black);
+    -webkit-font-smoothing: antialiased;
 }
 
-.bg-crimson {
-    background-color: var(--color-brand-crimson);
+h1,
+h2,
+h3,
+.serif {
+    font-family: 'Playfair Display', serif;
 }
 
-.text-crimson {
-    color: var(--color-brand-crimson);
+/* Premium Utilities */
+.glass {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
-.border-crimson {
-    border-color: var(--color-brand-crimson);
+.soft-shadow {
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05);
 }
 
-/* Smooth animations */
-.animate-fade-in {
-    animation: fadeIn 0.8s ease-out forwards;
+.text-gradient {
+    background: linear-gradient(to right, var(--color-deep-crimson), #D00000);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
-@keyframes fadeIn {
+.bg-pink-accent {
+    background-color: var(--color-soft-pink);
+}
+
+/* Smooth transitions for everything */
+* {
+    transition: all 0.3s ease;
+}
+
+/* Refined animations */
+@keyframes slowZoom {
+    0% {
+        transform: scale(1);
+    }
+
+    100% {
+        transform: scale(1.05);
+    }
+}
+
+.animate-slow-zoom {
+    animation: slowZoom 20s ease-in-out infinite alternate;
+}
+
+@keyframes slideUpFade {
     from {
         opacity: 0;
-        transform: translateY(10px);
+        transform: translateY(20px);
     }
 
     to {
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+.animate-slide-up {
+    animation: slideUpFade 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }

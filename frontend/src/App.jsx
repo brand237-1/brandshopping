@@ -101,7 +101,11 @@ const Marquee = ({ text, bg = "bg-black", textColor = "text-white", speed = 20 }
 );
 
 const PromoBar = () => (
-  <Marquee text="FREE SHIPPING ON ORDERS OVER $200 • EXCLUSIVE DESIGNER PIECES • LIMITED DROPS WEEKLY • BRANDSHOPINGLTD SIGNATURE •" />
+  <Marquee
+    text="✨ FREE SHIPPING ON ORDERS OVER $200 • 🛍️ EXCLUSIVE DESIGNER PIECES • 💖 LIMITED DROPS WEEKLY • 👑 BRANDSHOPINGLTD SIGNATURE • 🌿 SUSTAINABLY CRAFTED •"
+    bg="bg-pink-accent"
+    textColor="text-deep-crimson"
+  />
 );
 
 const SearchBar = ({ onSearch }) => {
@@ -167,19 +171,30 @@ const Navbar = () => {
   const items = ['New Arrivals', 'Clothing', 'Shoes', 'Accessories', 'Home & Gift', 'Gift Cards'];
 
   return (
-    <nav className="bg-white border-b border-gray-100 sticky top-0 z-40">
+    <nav className="glass sticky top-0 z-40 border-b border-white/20">
       <div className="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between gap-8">
         <div className="flex items-center gap-8">
-          <button className="md:hidden" onClick={() => setIsOpen(!isOpen)}>
-            {isOpen ? <X /> : <Menu />}
+          <button className="md:hidden text-brand-black" onClick={() => setIsOpen(!isOpen)}>
+            {isOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
-          <Link to="/" className="flex items-center gap-2 flex-shrink-0">
-            <img src="/logo.png" alt="BrandshopingLTD" className="h-10 w-auto" />
-            <span className="text-xl font-black tracking-tighter uppercase hidden xl:block">BrandshopingLTD</span>
+          <Link to="/" className="flex items-center gap-2 group transition-all">
+            <div className="w-10 h-10 bg-deep-crimson rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+              <span className="text-white font-black text-xl italic">B</span>
+            </div>
+            <div className="flex flex-col -gap-1">
+              <span className="text-xl font-black tracking-tighter uppercase leading-none">Brandshoping✨</span>
+              <span className="text-[8px] font-bold tracking-[0.4em] uppercase opacity-50 ml-0.5">Limited Luxury</span>
+            </div>
           </Link>
-          <div className="hidden md:flex gap-4">
+          <div className="hidden md:flex gap-6 items-center">
             {items.map(item => (
-              <Link key={item} to={`/collection/${item}`} className="text-[10px] font-black uppercase tracking-tight hover:text-crimson transition-colors whitespace-nowrap">{item}</Link>
+              <Link
+                key={item}
+                to={`/collection/${item}`}
+                className="text-[10px] font-bold uppercase tracking-widest hover:text-deep-crimson hover:translate-y-[-1px] transition-all whitespace-nowrap"
+              >
+                {item}
+              </Link>
             ))}
           </div>
         </div>
@@ -233,67 +248,81 @@ const Navbar = () => {
 };
 
 const HeroCarousel = () => {
-  const images = [
-    "/pictures/posts/luxury-silk-dress.png",
-    "/pictures/posts/designer-wool-coat.png",
-    "/pictures/posts/luxury-accessories-set.png"
+  const slides = [
+    { image: "/pictures/posts/luxury-silk-dress.png", title: "Refined Silk Collection", category: "NEW ARRIVALS" },
+    { image: "/pictures/posts/designer-wool-coat.png", title: "Autumn Outerwear", category: "SEASONAL EDIT" },
+    { image: "/pictures/posts/luxury-accessories-set.png", title: "Essential Details", category: "ACCESSORIES" }
   ];
-  const [current, setCurrent] = useState(0);
+  const [idx, setIdx] = useState(0);
 
   useEffect(() => {
-    const timer = setInterval(() => setCurrent(s => (s + 1) % images.length), 5000);
+    const timer = setInterval(() => setIdx(s => (s + 1) % slides.length), 6000);
     return () => clearInterval(timer);
-  }, []);
+  }, [slides.length]);
 
   return (
-    <div className="relative h-[600px] w-full overflow-hidden bg-black">
+    <section className="relative h-[90vh] overflow-hidden bg-brand-black">
       <AnimatePresence mode="wait">
-        <motion.img
-          key={current}
-          src={images[current]}
-          initial={{ opacity: 0, scale: 1.1 }}
-          animate={{ opacity: 0.6, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.9 }}
-          transition={{ duration: 1 }}
-          className="absolute inset-0 w-full h-full object-cover"
-        />
+        <motion.div
+          key={idx}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 1.5, ease: "easeInOut" }}
+          className="absolute inset-0"
+        >
+          <div className="absolute inset-0 bg-gradient-to-t from-brand-black/80 via-transparent to-brand-black/20 z-10" />
+          <motion.img
+            src={slides[idx].image}
+            className="w-full h-full object-cover animate-slow-zoom"
+            alt=""
+          />
+          <div className="absolute inset-0 z-20 flex flex-col items-center justify-center text-center px-4">
+            <motion.p
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.5, duration: 0.8 }}
+              className="text-white/80 font-bold tracking-[0.5em] text-[10px] uppercase mb-4"
+            >
+              {slides[idx].category} ✨
+            </motion.p>
+            <motion.h1
+              initial={{ y: 30, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.7, duration: 1 }}
+              className="text-white text-6xl md:text-9xl font-black tracking-tighter serif mb-8 leading-[0.9]"
+            >
+              {slides[idx].title.split(' ').map((word, i) => (
+                <span key={i} className="block last:text-deep-crimson italic">{word}</span>
+              ))}
+            </motion.h1>
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 1, duration: 0.8 }}
+            >
+              <Link
+                to="/collection/New Arrivals"
+                className="group relative inline-flex items-center gap-4 bg-white text-brand-black px-10 py-5 rounded-full font-black text-xs uppercase tracking-widest hover:bg-deep-crimson hover:text-white transition-all overflow-hidden shadow-2xl"
+              >
+                <span className="relative z-10 flex items-center gap-2 text-brand-black group-hover:text-white">Explore Drop 🛍️ <ArrowRight size={16} /></span>
+                <div className="absolute inset-0 bg-white group-hover:bg-deep-crimson transition-colors" />
+              </Link>
+            </motion.div>
+          </div>
+        </motion.div>
       </AnimatePresence>
-      <div className="absolute inset-0 flex flex-col items-center justify-center text-white text-center px-4">
-        <motion.h2
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          className="text-6xl md:text-8xl font-black italic tracking-tighter uppercase mb-6"
-        >
-          Signature Style
-        </motion.h2>
-        <motion.p
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.2 }}
-          className="text-lg md:text-xl font-medium tracking-wide mb-8 opacity-80"
-        >
-          Discover our new Spring/Summer collection curated for elegance.
-        </motion.p>
-        <Link
-          to="/collection/New Arrivals"
-          onClick={(e) => {
-            if (!user) {
-              e.preventDefault();
-              navigate('/login');
-            }
-          }}
-          className="bg-crimson text-white px-10 py-4 rounded-full font-bold uppercase tracking-widest text-sm hover:shadow-[0_0_20px_rgba(208,0,0,0.5)] transition-all"
-        >
-          Shop Now
-        </Link>
+
+      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-30 flex gap-3">
+        {slides.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => setIdx(i)}
+            className={`h-1 transition-all duration-500 rounded-full ${i === idx ? 'w-12 bg-white' : 'w-4 bg-white/30 hover:bg-white/50'}`}
+          />
+        ))}
       </div>
-      <button onClick={() => setCurrent(s => (s - 1 + images.length) % images.length)} className="absolute left-6 top-1/2 -translate-y-1/2 p-2 rounded-full border border-white/30 text-white hover:bg-white/10 transition-colors">
-        <ChevronLeft size={32} />
-      </button>
-      <button onClick={() => setCurrent(s => (s + 1) % images.length)} className="absolute right-6 top-1/2 -translate-y-1/2 p-2 rounded-full border border-white/30 text-white hover:bg-white/10 transition-colors">
-        <ChevronRight size={32} />
-      </button>
-    </div>
+    </section>
   );
 };
 
@@ -324,57 +353,72 @@ const ProductCard = ({ product }) => {
   const sizes = product.sizes ? JSON.parse(product.sizes) : [];
 
   return (
-    <div
-      className="group relative flex flex-col cursor-pointer"
+    <motion.div
+      layout
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      whileHover={{ y: -8 }}
+      className="group relative flex flex-col cursor-pointer bg-white rounded-2xl overflow-hidden soft-shadow border border-gray-100/50"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      onClick={(e) => {
-        if (!user) {
-          navigate('/login');
-        } else {
-          navigate(`/product/${product.id}`);
-        }
-      }}
+      onClick={() => user ? navigate(`/product/${product.id}`) : navigate('/login')}
     >
       <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
-      <Link to={`/product/${product.id}`} className="relative aspect-[3/4] bg-gray-100 overflow-hidden rounded-sm block">
-        <img
+      <div className="relative aspect-[3/4] overflow-hidden bg-gray-50">
+        <motion.img
           src={imgUrl}
+          className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
           alt={product.name}
-          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
           onError={(e) => { e.target.src = "https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=800"; }}
         />
-        <button className="absolute top-4 right-4 p-2 bg-white/80 rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-white" onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}>
-          <Heart size={18} className="text-gray-900" />
-        </button>
+        <div className="absolute top-4 right-4 z-10">
+          <button
+            className="w-10 h-10 bg-white/80 backdrop-blur-md rounded-full flex items-center justify-center text-gray-400 hover:text-deep-crimson transition-colors shadow-sm"
+            onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
+          >
+            <Heart size={18} />
+          </button>
+        </div>
+        {product.isNew && (
+          <div className="absolute top-4 left-4 z-10 bg-deep-crimson text-white text-[8px] font-black px-3 py-1.5 rounded-full tracking-widest uppercase shadow-lg">
+            New Arrival ✨
+          </div>
+        )}
         <AnimatePresence>
           {hovered && (
             <motion.div
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              exit={{ y: 20, opacity: 0 }}
-              className="absolute inset-x-0 bottom-0 p-6 bg-white/95 backdrop-blur-md flex flex-col items-center justify-center text-center"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 20 }}
+              className="absolute bottom-4 left-4 right-4 z-20"
             >
-              <div className="flex gap-2 mb-4">
-                {sizes.slice(0, 4).map(s => (
-                  <span key={s} className="w-8 h-8 rounded-full border border-gray-100 text-[8px] font-black flex items-center justify-center bg-gray-50">{s}</span>
-                ))}
-                {sizes.length > 4 && <span className="text-[8px] font-black text-gray-400">+{sizes.length - 4} More</span>}
-              </div>
-              <p className="text-[10px] font-black uppercase tracking-[0.2em] text-crimson">Select Essence & Size</p>
+              <button className="w-full bg-brand-black/90 backdrop-blur-md text-white text-[10px] font-black uppercase tracking-widest py-4 rounded-xl shadow-2xl hover:bg-deep-crimson transition-colors border border-white/10">
+                View & Buy 🛍️
+              </button>
             </motion.div>
           )}
         </AnimatePresence>
-      </Link>
-      <div className="mt-4 text-center">
-        <p className="text-[10px] uppercase tracking-widest text-gray-400 mb-1 font-bold">{product.brand || 'Luxury Store'}</p>
-        <Link to={`/product/${product.id}`} className="text-xs font-black uppercase tracking-tight group-hover:text-crimson transition-colors block">{product.name}</Link>
-        <div className="flex items-center justify-center gap-2 mt-1">
-          <p className="text-sm font-bold text-crimson">${product.price.toFixed(2)}</p>
-          {product.oldPrice && <p className="text-[10px] text-gray-300 line-through font-bold">${product.oldPrice.toFixed(2)}</p>}
+      </div>
+
+      <div className="p-5 flex flex-col gap-2 bg-white">
+        <div className="flex justify-between items-start">
+          <h3 className="text-sm font-black tracking-tight serif group-hover:text-deep-crimson transition-colors truncate pr-2">
+            {product.name}
+          </h3>
+          <p className="text-xs font-black text-deep-crimson tracking-tighter shrink-0">
+            ${product.price ? Number(product.price).toFixed(2) : '0.00'}
+          </p>
+        </div>
+        <div className="flex items-center justify-between">
+          <p className="text-[10px] text-brand-gray font-medium uppercase tracking-widest opacity-60">
+            {JSON.parse(product.colors || '["Refined"]').length} Colors 🌈
+          </p>
+          <p className="text-[10px] text-brand-gray font-medium uppercase tracking-widest opacity-60 italic">
+            {sizes.length} Sizes
+          </p>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
@@ -709,71 +753,91 @@ const ProductDetailPage = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-20">
+    <div className="max-w-7xl mx-auto px-4 py-20 animate-slide-up">
       <Helmet>
-        <title>{product.name} | BrandshopingLTD</title>
+        <title>{product.name} | BrandshopingLTD✨</title>
         <meta name="description" content={product.description} />
       </Helmet>
-      <Link to="/" className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest mb-12 hover:text-crimson transition-colors">
-        <ChevronLeft size={14} /> Back to Catalog
+
+      <Link to="/" className="inline-flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.2em] mb-12 hover:text-deep-crimson transition-all group">
+        <ChevronLeft size={16} className="group-hover:-translate-x-1 transition-transform" /> Back to Collection 🛍️
       </Link>
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-20">
-        <div className="space-y-6">
-          <div className="relative group overflow-hidden bg-gray-50 rounded-sm aspect-[4/5]">
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-24">
+        <div className="space-y-8">
+          <div className="relative group overflow-hidden bg-off-white rounded-[2.5rem] aspect-[4/5] shadow-2xl">
             <AnimatePresence mode="wait">
               <motion.img
                 key={activeImage}
                 src={activeImage}
                 alt={product.name}
-                initial={{ opacity: 0, scale: 1.05 }}
+                initial={{ opacity: 0, scale: 1.1 }}
                 animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ duration: 0.6, ease: "circOut" }}
-                className="w-full h-full object-cover rounded shadow-2xl"
+                exit={{ opacity: 0, scale: 0.9 }}
+                transition={{ duration: 0.8, ease: "circOut" }}
+                className="w-full h-full object-cover"
               />
             </AnimatePresence>
+            <div className="absolute top-8 right-8">
+              <button className="w-12 h-12 bg-white/80 backdrop-blur-xl rounded-full flex items-center justify-center text-deep-crimson shadow-xl hover:scale-110 transition-transform">
+                <Heart size={20} />
+              </button>
+            </div>
           </div>
           {hasGallery && (
-            <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide">
+            <div className="flex gap-6 overflow-x-auto pb-4 scrollbar-hide">
               {gallery.map((img, idx) => {
                 const url = img.startsWith('http') ? img : `${API_BASE_URL || ''}${img}`;
                 return (
                   <motion.button
                     key={idx}
-                    whileHover={{ scale: 1.05 }}
+                    whileHover={{ scale: 1.05, y: -5 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={() => setActiveImage(url)}
-                    className={`relative w-24 h-24 rounded-sm overflow-hidden flex-shrink-0 border-2 transition-all ${activeImage === url ? 'border-crimson' : 'border-transparent opacity-60 hover:opacity-100'}`}
+                    className={`relative w-28 h-28 rounded-3xl overflow-hidden flex-shrink-0 border-2 transition-all shadow-md ${activeImage === url ? 'border-deep-crimson shadow-deep-crimson/20' : 'border-transparent opacity-60 hover:opacity-100'}`}
                   >
-                    <img src={url} className="w-full h-full object-cover" alt={`${product.name} variation ${idx}`} />
+                    <img src={url} className="w-full h-full object-cover" alt="" />
                   </motion.button>
                 );
               })}
             </div>
           )}
         </div>
+
         <div className="flex flex-col justify-center">
-          <span className="text-[10px] font-black uppercase tracking-[0.4em] text-crimson mb-4">{product.brand || 'Luxury Signature'}</span>
-          <h1 className="text-6xl font-black uppercase tracking-tighter mb-6 leading-[0.9]">{product.name}</h1>
-          <div className="flex items-end gap-6 mb-10">
-            <p className="text-4xl font-bold tracking-tighter">${product.price.toFixed(2)}</p>
-            {product.oldPrice && <p className="text-xl text-gray-300 line-through font-bold pb-1">${product.oldPrice.toFixed(2)}</p>}
+          <span className="text-deep-crimson font-black text-[10px] tracking-[0.5em] uppercase mb-6 flex items-center gap-2">
+            <span className="w-8 h-[1px] bg-deep-crimson" /> {product.brand || 'Luxury Signature'} ✨
+          </span>
+          <h1 className="text-6xl md:text-8xl font-black serif tracking-tight mb-8 leading-[0.8] italic">{product.name}</h1>
+
+          <div className="flex items-center gap-8 mb-12">
+            <p className="text-5xl font-black tracking-tighter text-deep-crimson bg-pink-accent px-6 py-2 rounded-2xl shadow-sm italic">
+              ${product.price ? Number(product.price).toFixed(2) : '0.00'}
+            </p>
+            {product.oldPrice && (
+              <p className="text-2xl text-brand-gray line-through font-bold opacity-40 italic">
+                ${Number(product.oldPrice).toFixed(2)}
+              </p>
+            )}
           </div>
-          <p className="text-gray-500 text-sm leading-relaxed mb-12 font-medium max-w-lg italic">
-            "{product.description || 'A timeless masterpiece crafted with precision and elegance for the modern individual.'}"
+
+          <p className="text-brand-gray text-lg leading-relaxed mb-16 font-medium max-w-lg italic opacity-80 serif">
+            "{product.description || 'A timeless masterpiece crafted with precision and elegance for the modern individual who seeks perfection in every detail.'}"
           </p>
-          <div className="space-y-10 mb-12 max-w-md">
+
+          <div className="space-y-12 mb-16 max-w-md">
             {sizes.length > 0 && (
               <div>
-                <h4 className="text-[10px] font-black uppercase tracking-widest mb-4 flex justify-between">
-                  Select Size <span>{selectedSize ? `(${selectedSize})` : '(Required)'}</span>
-                </h4>
-                <div className="flex flex-wrap gap-3">
+                <div className="flex justify-between items-end mb-6">
+                  <h4 className="text-[10px] font-black uppercase tracking-[0.2em]">Select Essence & Size</h4>
+                  <span className="text-[10px] font-bold text-deep-crimson italic">{selectedSize || 'Required'}</span>
+                </div>
+                <div className="flex flex-wrap gap-4">
                   {sizes.map(s => (
                     <button
                       key={s}
                       onClick={() => setSelectedSize(s)}
-                      className={`min-w-[48px] h-12 rounded-sm border-2 flex items-center justify-center text-[10px] font-black uppercase tracking-tighter transition-all ${selectedSize === s ? 'border-black bg-black text-white' : 'border-gray-100 bg-white hover:border-black'}`}
+                      className={`w-14 h-14 rounded-2xl border-2 flex items-center justify-center text-[10px] font-black uppercase transition-all shadow-sm ${selectedSize === s ? 'border-deep-crimson bg-deep-crimson text-white shadow-deep-crimson/30 scale-110' : 'border-gray-100 bg-white hover:border-deep-crimson hover:text-deep-crimson'}`}
                     >
                       {s}
                     </button>
@@ -782,53 +846,43 @@ const ProductDetailPage = () => {
               </div>
             )}
 
-            {colors.length > 0 && (
-              <div>
-                <h4 className="text-[10px] font-black uppercase tracking-widest mb-4 flex justify-between">
-                  Select Color <span>{selectedColor ? `(${selectedColor})` : '(Required)'}</span>
-                </h4>
-                <div className="flex flex-wrap gap-3">
-                  {colors.map(c => (
-                    <button
-                      key={c}
-                      onClick={() => setSelectedColor(c)}
-                      className={`px-4 h-12 rounded-sm border-2 flex items-center justify-center text-[10px] font-black uppercase tracking-tighter transition-all ${selectedColor === c ? 'border-black bg-black text-white' : 'border-gray-100 bg-white hover:border-black'}`}
-                    >
-                      {c}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
-
             <button
               onClick={handleAdd}
-              className="w-full bg-black text-white py-6 font-black uppercase tracking-[0.2em] text-xs hover:bg-crimson transition-all active:scale-[0.98] duration-300 shadow-xl"
+              className="w-full bg-brand-black text-white py-8 rounded-[2rem] font-black uppercase tracking-[0.3em] text-xs hover:bg-deep-crimson transition-all active:scale-[0.95] duration-500 shadow-2xl flex items-center justify-center gap-3 overflow-hidden group"
             >
-              Add to Bag {!selectedSize && !selectedColor ? '— Select Essence' : ''}
+              <ShoppingBag size={20} className="group-hover:rotate-12 transition-transform" />
+              <span>Add to Bag {(!selectedSize && sizes.length > 0) ? '— Select Size ✨' : 'Now 🛍️'}</span>
             </button>
           </div>
-          <div className="space-y-4 pt-10 border-t border-gray-100">
-            <h4 className="text-[10px] font-black uppercase tracking-widest mb-4">The Promise</h4>
-            <div className="grid grid-cols-2 gap-4 text-[10px] font-bold uppercase tracking-widest text-gray-400">
-              <div className="flex items-center gap-2"><span>✨</span> Premium Craftsmanship</div>
-              <div className="flex items-center gap-2"><span>🌍</span> Sustainable Luxury</div>
-              <div className="flex items-center gap-2"><span>🛡️</span> 2-Year Warranty</div>
-              <div className="flex items-center gap-2"><span>📦</span> Priority Express</div>
+
+          <div className="grid grid-cols-2 gap-8 pt-12 border-t border-gray-100">
+            <div className="flex flex-col gap-2">
+              <span className="text-deep-crimson text-xl">✨</span>
+              <p className="text-[10px] font-black uppercase tracking-widest">Designer Craft</p>
+              <p className="text-[9px] font-medium text-brand-gray opacity-60">Superior materials only</p>
+            </div>
+            <div className="flex flex-col gap-2">
+              <span className="text-deep-crimson text-xl">🌿</span>
+              <p className="text-[10px] font-black uppercase tracking-widest">Sustainably Made</p>
+              <p className="text-[9px] font-medium text-brand-gray opacity-60">Ethically sourced pieces</p>
             </div>
           </div>
         </div>
       </div>
 
-      <section className="mt-40 border-t border-gray-100 pt-20">
-        <h3 className="text-3xl font-black uppercase tracking-tighter mb-12">The Philosophy</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-20">
-          <p className="text-sm text-gray-500 leading-relaxed font-medium italic">
-            Every piece at BrandshopingLTD is more than just fabric—it's an identity. Hand-selected for those who dare to stand out, this items represents the pinnacle of modern luxury aesthetics.
-          </p>
-          <p className="text-sm text-gray-500 leading-relaxed font-medium italic">
-            Sustainability is stitched into every seam. We partner with local manufacturers to ensure that your style doesn't come at the cost of the planet or people.
-          </p>
+      <section className="mt-48 bg-off-white rounded-[3rem] p-16 md:p-24 shadow-inner">
+        <div className="max-w-4xl mx-auto text-center">
+          <span className="text-deep-crimson font-black text-[10px] tracking-[0.5em] uppercase mb-8 block">The Philosophy ✨</span>
+          <h3 className="text-4xl md:text-6xl font-black serif italic tracking-tight mb-12 leading-tight">"Clothing is the primary identity of the soul, rendered in silk and light."</h3>
+          <div className="w-24 h-[1px] bg-deep-crimson/30 mx-auto mb-12" />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-16 text-left">
+            <p className="text-lg text-brand-gray leading-relaxed font-medium italic opacity-80 serif">
+              At BrandshopingLTD, we believe every stitch tells a story of ambition and grace. Our pieces are curated for the visionaries who see fashion not as a trend, but as a timeless legacy.
+            </p>
+            <p className="text-lg text-brand-gray leading-relaxed font-medium italic opacity-80 serif">
+              Sustainability isn't a feature; it's our foundational promise. We work exclusively with artisans who honor the planet as much as the craft, ensuring luxury that feels as good as it looks.
+            </p>
+          </div>
         </div>
       </section>
     </div>
@@ -981,63 +1035,93 @@ const HomePage = () => {
     }
   };
 
+  if (loading) return (
+    <div className="h-screen flex flex-col items-center justify-center gap-4">
+      <div className="w-12 h-12 border-2 border-deep-crimson border-t-transparent rounded-full animate-spin" />
+      <span className="font-black uppercase tracking-[0.3em] text-[10px] text-deep-crimson animate-pulse">Curating Selection✨</span>
+    </div>
+  );
+
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+    <div className="animate-slide-up">
       <Helmet>
-        <title>BrandshopingLTD | Exclusive Clothing & Designer Dresses</title>
+        <title>BrandshopingLTD | Exclusive Clothing & Designer Dresses✨</title>
         <meta name="description" content="Shop the latest exclusive clothing, designer dresses, and fashion accessories at BrandshopingLTD. Premium quality for the modern wardrobe." />
       </Helmet>
       <HeroCarousel />
-      <div className="max-w-7xl mx-auto px-4 py-20">
-        <div className="flex justify-between items-end mb-12">
-          <div>
-            <span className="text-[10px] font-black uppercase tracking-[0.3em] text-crimson mb-2 block">Curated Selection</span>
-            <h2 className="text-4xl font-black uppercase tracking-tighter">Featured Collection</h2>
-          </div>
-          <Link
-            to="/collection/Clothing"
+
+      <main className="max-w-7xl mx-auto px-4 py-24">
+        <div className="flex flex-col items-center text-center mb-24">
+          <span className="text-deep-crimson font-black text-[10px] tracking-[0.5em] uppercase mb-4">The Selection ✨</span>
+          <h2 className="text-4xl md:text-7xl font-black serif tracking-tight mb-8 leading-[0.8] italic">Editor's Pick</h2>
+          <div className="w-20 h-1 bg-deep-crimson rounded-full" />
+        </div>
+
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-16">
+          {products.slice(0, 8).map(product => (
+            <ProductCard key={product.id} product={{ ...product, isNew: true }} />
+          ))}
+        </div>
+
+        <div className="mt-40 grid grid-cols-1 md:grid-cols-2 gap-12">
+          <motion.div
+            whileHover={{ y: -10 }}
+            className="relative h-[700px] group overflow-hidden rounded-[2.5rem] cursor-pointer shadow-2xl"
             onClick={(e) => handleRestrictedClick(e, '/collection/Clothing')}
-            className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest group border-b border-black pb-1"
           >
-            Shop All <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
-          </Link>
+            <img src="/pictures/posts/luxury-silk-dress.png" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-[3s]" alt="" />
+            <div className="absolute inset-0 bg-brand-black/40 group-hover:bg-brand-black/30 transition-colors flex flex-col justify-end p-12 text-white">
+              <span className="font-bold tracking-[0.5em] text-[10px] uppercase mb-4">Exclusive Drop 🛍️</span>
+              <h3 className="text-5xl font-black serif italic mb-6 leading-none">Evening <br /> Elegance</h3>
+              <p className="text-sm font-medium text-white/80 max-w-sm mb-10 leading-relaxed">Discover our hand-picked selection of evening wear crafted from the finest premium silks.</p>
+              <button className="bg-white text-brand-black px-12 py-5 rounded-full font-black text-[10px] uppercase tracking-widest w-fit hover:bg-deep-crimson hover:text-white transition-all shadow-2xl">Shop Edit ✨</button>
+            </div>
+          </motion.div>
+
+          <motion.div
+            whileHover={{ y: -10 }}
+            className="relative h-[700px] group overflow-hidden rounded-[2.5rem] cursor-pointer shadow-2xl md:mt-24"
+            onClick={(e) => handleRestrictedClick(e, '/collection/Accessories')}
+          >
+            <img src="/pictures/posts/designer-wool-coat.png" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-[3s]" alt="" />
+            <div className="absolute inset-0 bg-brand-black/40 group-hover:bg-brand-black/30 transition-colors flex flex-col justify-end p-12 text-white">
+              <span className="font-bold tracking-[0.5em] text-[10px] uppercase mb-4">Modern Classic 🌿</span>
+              <h3 className="text-5xl font-black serif italic mb-6 leading-none">Timeless <br /> Layers</h3>
+              <p className="text-sm font-medium text-white/80 max-w-sm mb-10 leading-relaxed">Explore luxury outerwear designed for both warmth and effortless everyday sophistication.</p>
+              <button className="bg-white text-brand-black px-12 py-5 rounded-full font-black text-[10px] uppercase tracking-widest w-fit hover:bg-deep-crimson hover:text-white transition-all shadow-2xl">View Collection 🛍️</button>
+            </div>
+          </motion.div>
         </div>
 
-        {loading ? (
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
-            {[1, 2, 3, 4].map(n => (
-              <div key={n} className="animate-pulse flex flex-col gap-4">
-                <div className="aspect-[3/4] bg-gray-100 rounded-sm"></div>
-                <div className="h-4 bg-gray-100 rounded w-3/4 self-center"></div>
-                <div className="h-3 bg-gray-100 rounded w-1/4 self-center"></div>
-              </div>
-            ))}
+        <section className="mt-40 border-t border-gray-100 pt-24">
+          <div className="flex flex-wrap justify-between gap-12 text-center uppercase tracking-[0.4em] text-[8px] font-bold">
+            <div className="flex flex-col items-center gap-4 flex-1 min-w-[200px]">
+              <div className="w-12 h-12 bg-pink-accent rounded-2xl flex items-center justify-center text-deep-crimson">🌿</div>
+              <div><p className="mb-2 text-deep-crimson">Quality First</p><p className="opacity-40">Luxury craftsmanship in every stitch</p></div>
+            </div>
+            <div className="flex flex-col items-center gap-4 flex-1 min-w-[200px]">
+              <div className="w-12 h-12 bg-pink-accent rounded-2xl flex items-center justify-center text-deep-crimson">🔒</div>
+              <div><p className="mb-2 text-deep-crimson">Secure Checkout</p><p className="opacity-40">100% Encrypted transactions</p></div>
+            </div>
+            <div className="flex flex-col items-center gap-4 flex-1 min-w-[200px]">
+              <div className="w-12 h-12 bg-pink-accent rounded-2xl flex items-center justify-center text-deep-crimson">🌎</div>
+              <div><p className="mb-2 text-deep-crimson">Global Access</p><p className="opacity-40">Express worldwide shipping</p></div>
+            </div>
           </div>
-        ) : (
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 gap-y-16">
-            {products.length > 0 ? products.slice(0, 4).map(p => <ProductCard key={p.id} product={p} />) : <p className="col-span-full text-center py-20 text-gray-400 uppercase font-black tracking-widest text-[10px]">Curating your next favorite piece...</p>}
-          </div>
-        )}
-      </div>
-
-      <section className="bg-gray-50 py-20 mt-20">
-        <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-12 text-center uppercase tracking-widest text-[10px] font-black">
-          <div><p className="mb-2 text-crimson">Quality Guarantee</p><p className="text-gray-400">Exquisite craftsmanship in every stitch</p></div>
-          <div><p className="mb-2 text-crimson">Secure Payment</p><p className="text-gray-400">100% Encrypted transactions</p></div>
-          <div><p className="mb-2 text-crimson">Global Delivery</p><p className="text-gray-400">Express worldwide shipping</p></div>
-        </div>
-      </section>
+        </section>
+      </main>
 
       <ReviewSection />
 
       <Link
         to="/leave-review"
         onClick={(e) => handleRestrictedClick(e, '/leave-review')}
-        className="fixed bottom-8 left-8 bg-black text-white px-6 py-4 rounded-full text-[10px] font-black uppercase tracking-widest shadow-2xl hover:bg-crimson transition-colors z-50 flex items-center gap-3 active:scale-95 duration-300"
+        className="fixed bottom-8 left-8 bg-brand-black text-white px-8 py-5 rounded-full text-[10px] font-black uppercase tracking-widest shadow-2xl hover:bg-deep-crimson transition-all z-50 flex items-center gap-3 active:scale-95 duration-500 group"
       >
-        <span className="bg-white/20 p-1.5 rounded-full">🎁</span> Get 10% Off
+        <span className="bg-white/10 p-2 rounded-full group-hover:bg-white/20 transition-colors">🎁</span>
+        <span>Claim 10% OFF Reward</span>
       </Link>
-    </motion.div>
+    </div>
   );
 };
 
@@ -1054,22 +1138,34 @@ const LoginPage = () => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email })
     });
-    if (res.ok) { if (window.__showToast) window.__showToast('Password reset request sent to admin. Please check your email for instructions.', 'info', 'Request Sent'); }
-    else { if (window.__showToast) window.__showToast('Failed to send password reset request.', 'error', 'Request Failed'); }
+    if (res.ok) { if (window.__showToast) window.__showToast('Password reset request sent to admin.', 'info', 'Request Sent'); }
   };
 
   return (
-    <div className="max-w-md mx-auto my-20 px-4">
-      <h2 className="text-4xl font-black uppercase mb-8 tracking-tighter">Sign In</h2>
-      <form onSubmit={(e) => { e.preventDefault(); login(email, password).then(s => s && navigate('/profile')); }} className="space-y-6">
-        <input type="email" placeholder="Email Address" className="w-full border-b border-black py-3 outline-none focus:border-crimson" value={email} onChange={e => setEmail(e.target.value)} required />
-        <input type="password" placeholder="Password" className="w-full border-b border-black py-3 outline-none focus:border-crimson" value={password} onChange={e => setPassword(e.target.value)} required />
-        <div className="text-right">
-          <button type="button" onClick={handleForgot} className="text-[10px] font-black uppercase text-gray-400 hover:text-black">Forgot Password?</button>
+    <div className="min-h-[80vh] flex items-center justify-center px-4 animate-slide-up">
+      <div className="w-full max-w-md bg-white p-12 rounded-[2.5rem] soft-shadow border border-gray-100">
+        <div className="text-center mb-12">
+          <span className="text-deep-crimson font-black text-[10px] tracking-[0.5em] uppercase mb-4 block">Welcome Back ✨</span>
+          <h2 className="text-5xl font-black serif italic tracking-tighter">Sign In</h2>
         </div>
-        <button type="submit" className="w-full bg-black text-white py-4 font-bold uppercase tracking-widest hover:bg-crimson transition-colors">Sign In</button>
-      </form>
-      <p className="mt-8 text-[10px] font-black uppercase tracking-widest">New member? <Link to="/signup" className="text-crimson">Join Us</Link></p>
+        <form onSubmit={(e) => { e.preventDefault(); login(email, password).then(s => s && navigate('/profile')); }} className="space-y-8">
+          <div className="space-y-2">
+            <label className="text-[10px] font-black uppercase tracking-widest text-brand-gray/60 block ml-1">Email Address</label>
+            <input type="email" className="w-full bg-off-white border-none rounded-2xl p-4 outline-none focus:ring-2 ring-deep-crimson/20 transition-all font-medium text-sm" value={email} onChange={e => setEmail(e.target.value)} required />
+          </div>
+          <div className="space-y-2">
+            <label className="text-[10px] font-black uppercase tracking-widest text-brand-gray/60 block ml-1">Password</label>
+            <input type="password" className="w-full bg-off-white border-none rounded-2xl p-4 outline-none focus:ring-2 ring-deep-crimson/20 transition-all font-medium text-sm" value={password} onChange={e => setPassword(e.target.value)} required />
+          </div>
+          <div className="text-right">
+            <button type="button" onClick={handleForgot} className="text-[10px] font-black uppercase text-brand-gray/40 hover:text-deep-crimson transition-colors">Forgot Essence?</button>
+          </div>
+          <button type="submit" className="w-full bg-brand-black text-white py-5 rounded-2xl font-black uppercase tracking-widest hover:bg-deep-crimson transition-all shadow-xl active:scale-[0.98]">Enter the Club 🛍️</button>
+        </form>
+        <p className="mt-12 text-center text-[10px] font-black uppercase tracking-widest text-brand-gray/40">
+          New member? <Link to="/signup" className="text-deep-crimson hover:underline">Join the Elite 🕊️</Link>
+        </p>
+      </div>
     </div>
   );
 };
@@ -1080,14 +1176,31 @@ const SignupPage = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="max-w-md mx-auto my-20 px-4">
-      <h2 className="text-4xl font-black uppercase mb-8 tracking-tighter">Join the Club</h2>
-      <form onSubmit={(e) => { e.preventDefault(); signup(formData.email, formData.password, formData.name).then(s => s && navigate('/profile')); }} className="space-y-6">
-        <input type="text" placeholder="Full Name" className="w-full border-b border-black py-3 outline-none focus:border-crimson" value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} required />
-        <input type="email" placeholder="Email Address" className="w-full border-b border-black py-3 outline-none focus:border-crimson" value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} required />
-        <input type="password" placeholder="Password" className="w-full border-b border-black py-3 outline-none focus:border-crimson" value={formData.password} onChange={e => setFormData({ ...formData, password: e.target.value })} required />
-        <button type="submit" className="w-full bg-black text-white py-4 font-bold uppercase tracking-widest hover:bg-crimson transition-colors">Create Account</button>
-      </form>
+    <div className="min-h-[80vh] flex items-center justify-center px-4 animate-slide-up">
+      <div className="w-full max-w-md bg-white p-12 rounded-[2.5rem] soft-shadow border border-gray-100">
+        <div className="text-center mb-12">
+          <span className="text-deep-crimson font-black text-[10px] tracking-[0.5em] uppercase mb-4 block">New Identity ✨</span>
+          <h2 className="text-5xl font-black serif italic tracking-tighter">Join the Club</h2>
+        </div>
+        <form onSubmit={(e) => { e.preventDefault(); signup(formData.email, formData.password, formData.name).then(s => s && navigate('/profile')); }} className="space-y-8">
+          <div className="space-y-2">
+            <label className="text-[10px] font-black uppercase tracking-widest text-brand-gray/60 block ml-1">Full Name</label>
+            <input type="text" className="w-full bg-off-white border-none rounded-2xl p-4 outline-none focus:ring-2 ring-deep-crimson/20 transition-all font-medium text-sm" value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} required />
+          </div>
+          <div className="space-y-2">
+            <label className="text-[10px] font-black uppercase tracking-widest text-brand-gray/60 block ml-1">Email Address</label>
+            <input type="email" className="w-full bg-off-white border-none rounded-2xl p-4 outline-none focus:ring-2 ring-deep-crimson/20 transition-all font-medium text-sm" value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} required />
+          </div>
+          <div className="space-y-2">
+            <label className="text-[10px] font-black uppercase tracking-widest text-brand-gray/60 block ml-1">Secure Password</label>
+            <input type="password" className="w-full bg-off-white border-none rounded-2xl p-4 outline-none focus:ring-2 ring-deep-crimson/20 transition-all font-medium text-sm" value={formData.password} onChange={e => setFormData({ ...formData, password: e.target.value })} required />
+          </div>
+          <button type="submit" className="w-full bg-brand-black text-white py-5 rounded-2xl font-black uppercase tracking-widest hover:bg-deep-crimson transition-all shadow-xl active:scale-[0.98]">Create Account 🛍️</button>
+        </form>
+        <p className="mt-12 text-center text-[10px] font-black uppercase tracking-widest text-brand-gray/40">
+          Already a member? <Link to="/login" className="text-deep-crimson hover:underline">Sign In 🕊️</Link>
+        </p>
+      </div>
     </div>
   );
 };
@@ -1128,160 +1241,248 @@ const ProfilePage = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-20">
+    <div className="max-w-7xl mx-auto px-4 py-24 animate-slide-up">
       <Helmet>
-        <title>BrandshopingLTD | Your Profile - {user.username}</title>
+        <title>BrandshopingLTD | Your Essence - {user.name || user.username}✨</title>
       </Helmet>
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-16">
-        <div className="lg:col-span-1 space-y-8">
-          <div className="bg-white p-8 rounded-2xl border border-gray-100 shadow-sm">
-            <UserIcon className="w-12 h-12 mb-6 text-crimson" />
-            <div className="flex justify-between items-start mb-4">
-              <div>
-                <h2 className="text-2xl font-black uppercase mb-1">{user.name}</h2>
-                <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">{user.username}</p>
-              </div>
-              {!isEditing && <button onClick={() => setIsEditing(true)} className="text-[8px] font-black uppercase text-crimson border border-crimson/20 px-3 py-1 rounded-full hover:bg-crimson hover:text-white transition-all">Edit</button>}
-            </div>
 
-            {isEditing ? (
-              <form onSubmit={handleUpdateProfile} className="space-y-4 pt-4 border-t border-gray-50">
-                <input type="text" placeholder="Full Name" className="w-full text-[10px] border-b border-gray-100 py-2 outline-none focus:border-crimson" value={profileForm.name} onChange={e => setProfileForm({ ...profileForm, name: e.target.value })} />
-                <textarea placeholder="Tell us about yourself (Bio)" className="w-full text-[10px] border border-gray-100 p-2 outline-none focus:border-crimson h-20 resize-none" value={profileForm.bio} onChange={e => setProfileForm({ ...profileForm, bio: e.target.value })} />
-                <input type="text" placeholder="Default Address" className="w-full text-[10px] border-b border-gray-100 py-2 outline-none focus:border-crimson" value={profileForm.address} onChange={e => setProfileForm({ ...profileForm, address: e.target.value })} />
-                <div className="flex gap-2">
-                  <button type="submit" className="flex-1 bg-black text-white py-2 text-[8px] font-black uppercase tracking-widest">Save Changes</button>
-                  <button type="button" onClick={() => setIsEditing(false)} className="px-4 py-2 text-[8px] font-black uppercase tracking-widest text-gray-400">Cancel</button>
+      <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
+        <div>
+          <span className="text-deep-crimson font-black text-[10px] tracking-[0.5em] uppercase mb-4 block">Private Member ✨</span>
+          <h2 className="text-4xl md:text-7xl font-black serif italic tracking-tight leading-none">Your Sanctuary</h2>
+        </div>
+        <div className="flex items-center gap-4 text-[10px] font-black uppercase tracking-widest text-brand-gray/40">
+          <span className="w-12 h-[1px] bg-gray-200" />
+          <span>Membership ID: #{user.id}</span>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-16">
+        <div className="lg:col-span-1 space-y-12">
+          <div className="bg-white p-10 rounded-[2.5rem] soft-shadow border border-gray-100 relative overflow-hidden group">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-pink-accent/30 rounded-full -mr-16 -mt-16 blur-3xl" />
+
+            <div className="relative z-10">
+              <div className="w-20 h-20 bg-pink-accent rounded-[2rem] flex items-center justify-center text-deep-crimson mb-8 group-hover:scale-110 transition-transform duration-500">
+                <UserIcon size={32} />
+              </div>
+
+              <div className="flex justify-between items-start mb-8">
+                <div>
+                  <h3 className="text-3xl font-black serif italic mb-2 tracking-tight">{user.name || 'Elite Member'}</h3>
+                  <p className="text-[10px] font-black text-brand-gray/40 uppercase tracking-widest">{user.username}</p>
                 </div>
-              </form>
-            ) : (
-              <div className="pt-4 border-t border-gray-50">
-                <p className="text-xs text-gray-500 italic mb-4">"{user.bio || 'Luxury enthusiast. Fashion explorer.'}"</p>
-                {user.address && (
-                  <div className="flex items-start gap-2 text-[10px] text-gray-400 font-bold uppercase tracking-tighter">
-                    <span>📍</span> <span>{user.address}</span>
-                  </div>
+                {!isEditing && (
+                  <button
+                    onClick={() => setIsEditing(true)}
+                    className="text-[8px] font-black uppercase text-deep-crimson border border-deep-crimson/20 px-5 py-2 rounded-full hover:bg-deep-crimson hover:text-white transition-all shadow-sm"
+                  >
+                    Edit Profile
+                  </button>
                 )}
               </div>
-            )}
-          </div>
-          <div className="bg-black text-white p-8 rounded-2xl">
-            <h3 className="text-[10px] font-black uppercase tracking-widest mb-6 flex items-center gap-2">
-              <Bell className="text-crimson" size={16} /> Official Alerts
-            </h3>
-            <div className="space-y-4 mb-8 pb-8 border-b border-white/10">
-              {user.notifications && user.notifications.length > 0 ? user.notifications.map(n => (
-                <div key={n.id} className="bg-crimson/10 p-4 rounded-xl border border-crimson/20">
-                  <p className="text-xs leading-relaxed font-bold">{n.content}</p>
-                  <p className="text-[8px] text-gray-500 mt-2 font-black uppercase">{new Date(n.createdAt).toLocaleDateString()}</p>
+
+              {isEditing ? (
+                <form onSubmit={handleUpdateProfile} className="space-y-6 pt-6 border-t border-gray-50/50">
+                  <div className="space-y-2">
+                    <label className="text-[8px] font-black uppercase text-brand-gray/40 ml-1">Full Name</label>
+                    <input type="text" className="w-full bg-off-white/50 border-none rounded-xl p-3 text-xs outline-none focus:ring-2 ring-deep-crimson/10 font-medium" value={profileForm.name} onChange={e => setProfileForm({ ...profileForm, name: e.target.value })} />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-[8px] font-black uppercase text-brand-gray/40 ml-1">Personal Bio</label>
+                    <textarea className="w-full bg-off-white/50 border-none rounded-xl p-3 text-xs outline-none focus:ring-2 ring-deep-crimson/10 h-24 resize-none font-medium" value={profileForm.bio} onChange={e => setProfileForm({ ...profileForm, bio: e.target.value })} />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-[8px] font-black uppercase text-brand-gray/40 ml-1">Primary Address</label>
+                    <input type="text" className="w-full bg-off-white/50 border-none rounded-xl p-3 text-xs outline-none focus:ring-2 ring-deep-crimson/10 font-medium" value={profileForm.address} onChange={e => setProfileForm({ ...profileForm, address: e.target.value })} />
+                  </div>
+                  <div className="flex gap-3 pt-2">
+                    <button type="submit" className="flex-1 bg-brand-black text-white py-4 rounded-xl font-black text-[9px] uppercase tracking-widest shadow-xl hover:bg-deep-crimson transition-all">Save Essence ✨</button>
+                    <button type="button" onClick={() => setIsEditing(false)} className="px-6 py-4 rounded-xl text-[9px] font-black uppercase tracking-widest text-brand-gray/60 hover:text-brand-black transition-colors">Cancel</button>
+                  </div>
+                </form>
+              ) : (
+                <div className="pt-8 border-t border-gray-50/50 space-y-6">
+                  <p className="text-sm text-brand-gray/70 leading-relaxed font-medium italic serif">
+                    "{user.bio || 'Luxury enthusiast. Fashion explorer. Seeking the extraordinary in every stitch.'}"
+                  </p>
+                  {user.address && (
+                    <div className="flex items-center gap-3 text-[10px] text-brand-gray/60 font-bold uppercase tracking-tight bg-off-white/50 p-4 rounded-2xl border border-gray-50">
+                      <span className="text-deep-crimson text-sm">📍</span> <span>{user.address}</span>
+                    </div>
+                  )}
                 </div>
-              )) : <p className="text-[10px] text-gray-500 uppercase font-bold tracking-tighter">No official alerts.</p>}
+              )}
+            </div>
+          </div>
+
+          <div className="bg-brand-black text-white p-10 rounded-[2.5rem] shadow-2xl relative overflow-hidden">
+            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-deep-crimson via-pink-accent to-deep-crimson opacity-50" />
+
+            <h3 className="text-[10px] font-black uppercase tracking-[0.4em] mb-10 flex items-center gap-3">
+              <Bell className="text-deep-crimson" size={16} /> Curated Alerts ✨
+            </h3>
+
+            <div className="space-y-6 mb-12 pb-12 border-b border-white/5">
+              {user.notifications && user.notifications.length > 0 ? user.notifications.map(n => (
+                <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} key={n.id} className="bg-white/5 backdrop-blur-md p-5 rounded-2xl border border-white/5 hover:border-white/10 transition-all">
+                  <p className="text-sm font-medium leading-relaxed opacity-90">{n.content}</p>
+                  <p className="text-[8px] text-deep-crimson mt-3 font-black uppercase tracking-widest">{new Date(n.createdAt).toLocaleDateString()}</p>
+                </motion.div>
+              )) : (
+                <p className="text-[9px] text-white/20 uppercase font-black tracking-widest italic py-4">No official alerts at this moment.</p>
+              )}
             </div>
 
-            <h3 className="text-[10px] font-black uppercase tracking-widest mb-6 flex items-center gap-2">
-              <MessageSquare className="text-crimson" size={16} /> Support Messages
+            <h3 className="text-[10px] font-black uppercase tracking-[0.4em] mb-10 flex items-center gap-3">
+              <MessageSquare className="text-deep-crimson" size={16} /> Personal Concierge
             </h3>
-            <div className="space-y-4">
-              {user.messages && user.messages.length > 0 ? user.messages.map(m => (
-                <div key={m.id} className={`p-4 rounded-xl border ${m.senderId === 0 ? 'bg-white/10 border-white/20' : 'bg-white/5 border-transparent opacity-60'}`}>
-                  <p className="text-[8px] text-crimson font-black uppercase mb-1">{m.senderId === 0 ? 'Admin' : 'You'}</p>
-                  <p className="text-xs leading-relaxed">{m.content}</p>
-                  <p className="text-[8px] text-gray-500 mt-2 font-bold uppercase">{new Date(m.createdAt).toLocaleDateString()}</p>
+            <div className="space-y-6">
+              {user.messages && user.messages.length > 0 ? user.messages.slice(0, 3).map(m => (
+                <div key={m.id} className={`p-5 rounded-2xl border transition-all ${m.senderId === 0 ? 'bg-deep-crimson/10 border-deep-crimson/20' : 'bg-white/5 border-transparent opacity-60'}`}>
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="text-[8px] text-deep-crimson font-black uppercase tracking-widest">{m.senderId === 0 ? 'Signature Concierge' : 'You'}</span>
+                    <span className="text-[7px] text-white/20 uppercase font-bold">{new Date(m.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                  </div>
+                  <p className="text-xs leading-relaxed opacity-80">{m.content}</p>
                 </div>
-              )) : <p className="text-[10px] text-gray-500 uppercase font-bold tracking-tighter">No support history.</p>}
+              )) : (
+                <p className="text-[9px] text-white/20 uppercase font-black tracking-widest italic py-4">Direct message history is empty.</p>
+              )}
             </div>
           </div>
         </div>
+
         <div className="lg:col-span-2">
-          <h3 className="text-2xl font-black uppercase mb-8 flex items-center gap-3"><ShoppingBag className="text-crimson" /> Shopping Bag</h3>
-          <div className="space-y-6">
+          <div className="flex items-center gap-4 mb-12">
+            <h3 className="text-3xl font-black serif italic tracking-tight">Shopping Bag</h3>
+            <div className="flex-1 h-[1px] bg-gray-100" />
+            <span className="text-[10px] font-black uppercase tracking-widest text-deep-crimson bg-pink-accent px-4 py-2 rounded-full shadow-sm">{cart.length} Pieces</span>
+          </div>
+
+          <div className="space-y-10">
             {cart.map(item => (
-              <div key={item.id} className="flex gap-6 border-b border-gray-100 pb-6 items-center">
-                <img src={item.imagePath.startsWith('http') ? item.imagePath : `${API_BASE_URL || ''}${item.imagePath}`} className="w-20 h-24 object-cover rounded" alt="" />
-                <div className="flex-1">
-                  <p className="text-[10px] font-black uppercase text-gray-400">{item.brand}</p>
-                  <h4 className="font-bold text-sm uppercase">{item.name}</h4>
-                  <div className="flex gap-2 mt-1">
-                    {item.selectedSize && <span className="text-[8px] font-black uppercase bg-gray-100 px-2 py-0.5 rounded-full">Size: {item.selectedSize}</span>}
-                    {item.selectedColor && <span className="text-[8px] font-black uppercase bg-gray-100 px-2 py-0.5 rounded-full">Color: {item.selectedColor}</span>}
-                  </div>
-                  <p className="text-sm font-bold mt-2">${item.price.toFixed(2)} x {item.quantity}</p>
+              <motion.div layout key={item.cartId || item.id} className="flex gap-10 group items-center bg-white p-6 rounded-[2rem] border border-transparent hover:border-gray-100 transition-all hover:shadow-xl hover:shadow-black/[0.02]">
+                <div className="relative w-32 h-40 overflow-hidden rounded-2xl shadow-lg">
+                  <img src={item.imagePath.startsWith('http') ? item.imagePath : `${API_BASE_URL || ''}${item.imagePath}`} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="" />
                 </div>
-                <button onClick={() => removeFromCart(item.cartId || item.id)} className="text-gray-300 hover:text-red-500"><X size={20} /></button>
-              </div>
+
+                <div className="flex-1 flex flex-col justify-center">
+                  <span className="text-[9px] font-black uppercase text-deep-crimson tracking-[0.3em] mb-2">{item.brand || 'Luxury Edit'} ✨</span>
+                  <h4 className="font-black serif italic text-xl mb-4 group-hover:text-deep-crimson transition-colors">{item.name}</h4>
+                  <div className="flex flex-wrap gap-3 mb-6">
+                    {item.selectedSize && <span className="text-[8px] font-black uppercase bg-off-white text-brand-gray/60 px-4 py-1.5 rounded-full border border-gray-100">Size: {item.selectedSize}</span>}
+                    {item.selectedColor && <span className="text-[8px] font-black uppercase bg-off-white text-brand-gray/60 px-4 py-1.5 rounded-full border border-gray-100">Choice: {item.selectedColor}</span>}
+                  </div>
+                  <div className="flex items-baseline gap-4">
+                    <p className="text-2xl font-black tracking-tighter">${item.price.toFixed(2)}</p>
+                    <span className="text-[10px] font-bold text-brand-gray/30 uppercase">qty: {item.quantity}</span>
+                  </div>
+                </div>
+
+                <button onClick={() => removeFromCart(item.cartId || item.id)} className="w-12 h-12 rounded-full bg-off-white text-brand-gray/20 hover:bg-deep-crimson hover:text-white hover:rotate-90 transition-all flex items-center justify-center shadow-inner">
+                  <X size={20} />
+                </button>
+              </motion.div>
             ))}
+
             {cart.length > 0 && (
-              <div className="pt-8 space-y-6 animate-fade-in">
-                <div className="bg-gray-50 p-6 rounded-2xl border border-gray-100">
-                  <h4 className="text-[10px] font-black uppercase tracking-widest mb-4">Delivery & Payment</h4>
-                  <div className="space-y-6">
-                    <div>
-                      <label className="text-[8px] font-black uppercase tracking-widest text-gray-400 block mb-2">Delivery Address (REQUIRED)</label>
-                      <input
-                        type="text"
-                        className="w-full bg-white border border-gray-200 p-3 rounded-xl text-xs outline-none focus:border-crimson"
-                        placeholder="Street, City, Zip Code"
-                        value={orderAddress}
-                        onChange={e => setOrderAddress(e.target.value)}
-                      />
-                    </div>
-                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-                      {[
-                        { id: 'card', icon: <CreditCard size={18} />, label: 'Credit Card' },
-                        { id: 'paypal', icon: <Globe size={18} />, label: 'PayPal' },
-                        { id: 'applepay', icon: <Smartphone size={18} />, label: 'Apple Pay' },
-                        { id: 'googlepay', icon: <Wallet size={18} />, label: 'Google Pay' },
-                        { id: 'bank', icon: <Building2 size={18} />, label: 'Bank Transfer' },
-                        { id: 'cod', icon: <Banknote size={18} />, label: 'Cash on Delivery' }
-                      ].map(m => (
-                        <button
-                          key={m.id}
-                          onClick={() => setPaymentMethod(m.id)}
-                          className={`flex items-center gap-3 p-4 rounded-xl border-2 transition-all ${paymentMethod === m.id ? 'border-crimson bg-white shadow-sm' : 'border-transparent bg-white hover:border-gray-200'}`}
-                        >
-                          <span className={paymentMethod === m.id ? 'text-crimson' : 'text-gray-400'}>{m.icon}</span>
-                          <span className="text-[10px] font-black uppercase">{m.label}</span>
-                        </button>
-                      ))}
+              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="pt-12 space-y-10">
+                <div className="bg-brand-black text-white p-12 rounded-[3rem] shadow-2xl relative overflow-hidden">
+                  <div className="absolute top-0 right-0 w-64 h-64 bg-deep-crimson/20 rounded-full -mr-32 -mt-32 blur-3xl" />
+
+                  <div className="relative z-10">
+                    <h4 className="text-[10px] font-black uppercase tracking-[0.5em] mb-10 flex items-center gap-4">
+                      Delivery Sanctuary <span className="flex-1 h-[1px] bg-white/10" />
+                    </h4>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
+                      <div className="space-y-4">
+                        <label className="text-[10px] font-black uppercase tracking-widest text-deep-crimson block ml-1">Destination Address 📍</label>
+                        <input
+                          type="text"
+                          className="w-full bg-white/10 border border-white/10 p-5 rounded-2xl text-sm outline-none focus:bg-white/20 transition-all font-medium placeholder:text-white/20"
+                          placeholder="Penthouse, Street, City Elite"
+                          value={orderAddress}
+                          onChange={e => setOrderAddress(e.target.value)}
+                        />
+                      </div>
+
+                      <div className="space-y-4">
+                        <label className="text-[10px] font-black uppercase tracking-widest text-deep-crimson block ml-1">Payment Signature 💳</label>
+                        <div className="grid grid-cols-2 gap-3">
+                          {[
+                            { id: 'card', label: 'Credit Card' },
+                            { id: 'paypal', label: 'PayPal 💖' },
+                            { id: 'apple', label: 'Apple Pay' },
+                            { id: 'bank', label: 'Transfer 🏛️' }
+                          ].map(m => (
+                            <button
+                              key={m.id}
+                              onClick={() => setPaymentMethod(m.id)}
+                              className={`p-4 rounded-2xl border transition-all text-[9px] font-black uppercase tracking-widest ${paymentMethod === m.id ? 'bg-white text-brand-black border-white shadow-xl' : 'bg-white/5 border-white/10 hover:border-white/30'}`}
+                            >
+                              {m.label}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
-                <div className="flex justify-between items-end border-t border-gray-100 pt-6">
-                  <div className="flex flex-col gap-1">
-                    <p className="text-[10px] font-black uppercase tracking-widest">Bag Total</p>
+
+                <div className="bg-pink-accent/20 p-12 rounded-[3rem] border border-pink-accent/30 flex flex-col md:flex-row justify-between items-center gap-10">
+                  <div className="space-y-2 text-center md:text-left">
+                    <p className="text-[10px] font-black uppercase tracking-[0.3em] text-deep-crimson mb-4">Final Essence Report 🛍️</p>
                     {localStorage.getItem('hasDiscount') === 'true' && (
-                      <span className="text-[10px] font-black uppercase text-crimson italic">10% Reviewer Discount Applied 🎁</span>
+                      <div className="flex items-center gap-3 text-deep-crimson font-black serif italic text-lg animate-pulse">
+                        <span>🎁</span> 10% Member Reward Active
+                      </div>
                     )}
                   </div>
-                  <div className="text-right">
+
+                  <div className="text-center md:text-right">
+                    <p className="text-[10px] font-black uppercase tracking-widest opacity-40 mb-2">Grand Total</p>
                     {localStorage.getItem('hasDiscount') === 'true' ? (
-                      <>
-                        <p className="text-xs text-gray-300 line-through font-bold">${cart.reduce((sum, i) => sum + (i.price * i.quantity), 0).toFixed(2)}</p>
-                        <p className="text-3xl font-black underline decoration-crimson">${(cart.reduce((sum, i) => sum + (i.price * i.quantity), 0) * 0.9).toFixed(2)}</p>
-                      </>
+                      <div className="space-y-1">
+                        <p className="text-lg text-deep-crimson/30 line-through font-black serif italic">
+                          ${cart.reduce((sum, i) => sum + (i.price * i.quantity), 0).toFixed(2)}
+                        </p>
+                        <p className="text-6xl font-black serif italic tracking-tighter text-deep-crimson transform hover:scale-105 transition-transform">
+                          ${(cart.reduce((sum, i) => sum + (i.price * i.quantity), 0) * 0.9).toFixed(2)}
+                        </p>
+                      </div>
                     ) : (
-                      <p className="text-3xl font-black underline decoration-crimson">${cart.reduce((sum, i) => sum + (i.price * i.quantity), 0).toFixed(2)}</p>
+                      <p className="text-6xl font-black serif italic tracking-tighter text-brand-black transform hover:scale-105 transition-transform">
+                        ${cart.reduce((sum, i) => sum + (i.price * i.quantity), 0).toFixed(2)}
+                      </p>
                     )}
                   </div>
                 </div>
+
                 <button
                   onClick={() => {
-                    if (!orderAddress) { if (window.__showToast) window.__showToast('Please provide a delivery address', 'warning', 'Missing Address'); return; }
-                    if (!paymentMethod) { if (window.__showToast) window.__showToast('Please select a payment method', 'warning', 'Payment Required'); return; }
+                    if (!orderAddress) { if (window.__showToast) window.__showToast('Please provide a delivery path', 'warning', 'Address Missing'); return; }
+                    if (!paymentMethod) { if (window.__showToast) window.__showToast('Please select a payment signature', 'warning', 'Payment Required'); return; }
                     placeOrder(paymentMethod, orderAddress).then(() => {
                       if (window.__showToast) {
-                        window.__showToast('Order placed successfully! Our admin will review your order shortly.', 'success', 'Order Confirmed 🛍️', 6000);
-                        setTimeout(() => window.__showToast('Check your Support Messages in profile for confirmation within 1 hour.', 'info', 'Next Steps', 5000), 2000);
+                        window.__showToast('Your order has been etched into our records! Concierge will reach out.', 'success', 'Order Confirmed 🛍️', 6000);
                       }
                     });
                   }}
-                  className="w-full bg-black text-white py-5 font-black uppercase tracking-widest hover:bg-crimson transition-all"
+                  className="w-full bg-brand-black text-white py-10 rounded-[2.5rem] font-black uppercase tracking-[0.5em] text-sm hover:bg-deep-crimson transition-all shadow-2xl active:scale-[0.98] duration-500 overflow-hidden group relative"
                 >
-                  Complete Order {localStorage.getItem('hasDiscount') === 'true' && '- 10% Applied!'}
+                  <span className="relative z-10">Finalize Signature Drop {localStorage.getItem('hasDiscount') === 'true' && '- 10% Applied!'}</span>
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-[2s]" />
                 </button>
+              </motion.div>
+            )}
+            {cart.length === 0 && (
+              <div className="bg-off-white py-32 rounded-[3rem] text-center border-2 border-dashed border-gray-100">
+                <p className="text-[10px] font-black uppercase tracking-[0.5em] text-brand-gray/30 mb-8">Your sanctuary bag is void ✨</p>
+                <Link to="/" className="inline-block bg-brand-black text-white px-12 py-5 rounded-full font-black uppercase tracking-widest text-[10px] hover:bg-deep-crimson transition-all shadow-xl">Explore Drops 🛍️</Link>
               </div>
             )}
-            {cart.length === 0 && <p className="text-center py-20 text-gray-400 uppercase font-black tracking-widest text-[10px]">Your bag is empty</p>}
           </div>
         </div>
       </div>
