@@ -199,14 +199,13 @@ const Navbar = () => {
             {isOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
 
-          <Link to="/" className="flex items-center gap-2 group transition-all" onClick={() => setIsOpen(false)}>
-            <div className="w-8 h-8 md:w-10 md:h-10 bg-deep-crimson rounded-lg md:rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
-              <span className="text-white font-black text-lg md:text-xl italic">B</span>
-            </div>
-            <div className="flex flex-col -gap-1">
-              <span className="text-lg md:text-xl font-black tracking-tighter uppercase leading-none">Brandshoping✨</span>
-              <span className="text-[7px] md:text-[8px] font-bold tracking-[0.4em] uppercase opacity-50 ml-0.5">Limited Luxury</span>
-            </div>
+          <Link to="/" className="flex items-center gap-3 active:scale-95 transition-transform" onClick={() => setIsOpen(false)}>
+            <img
+              src="/logo.png"
+              alt="BrandshopingLTD"
+              className="h-8 md:h-10 w-auto object-contain"
+              loading="eager"
+            />
           </Link>
 
           <div className="hidden md:flex gap-6 items-center">
