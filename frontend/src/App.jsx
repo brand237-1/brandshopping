@@ -183,7 +183,7 @@ const Navbar = () => {
 
   return (
     <nav className="glass sticky top-0 z-40 border-b border-white/20 transition-all duration-500">
-      <div className="max-w-7xl mx-auto px-4 h-16 md:h-20 flex items-center justify-between gap-4 md:gap-8">
+      <div className="max-w-7xl mx-auto px-0 h-14 md:h-20 flex items-center justify-between gap-4 md:gap-8">
         <div className="flex items-center gap-4 md:gap-8">
           <button
             className="md:hidden text-brand-black p-3 -ml-2 hover:bg-black/5 rounded-full transition-colors active:scale-95"
@@ -424,12 +424,12 @@ const ProductCard = ({ product }) => {
       layout
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
-      className="group relative flex flex-col cursor-pointer bg-white rounded-2xl md:rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-gray-50 h-full"
+      className="group relative flex flex-col cursor-pointer bg-white rounded-none md:rounded-3xl overflow-hidden shadow-none md:shadow-sm hover:shadow-xl transition-all duration-500 border-b border-gray-50 md:border h-full"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       onClick={() => user ? navigate(`/product/${product.id}`) : navigate('/login')}
     >
-      <div className="relative aspect-[3/4] overflow-hidden bg-gray-50">
+      <div className="relative aspect-[4/5] overflow-hidden bg-gray-50">
         <div className="absolute top-4 left-4 z-20 flex flex-col gap-2">
           <span className="bg-white/90 backdrop-blur px-3 py-1 rounded-full text-[8px] font-black tracking-widest uppercase text-brand-black shadow-sm flex items-center gap-1.5">
             <span className="w-1.5 h-1.5 rounded-full bg-deep-crimson animate-pulse" /> ✨ NEW DROP
@@ -1120,14 +1120,14 @@ const HomePage = () => {
       </Helmet>
       <HeroCarousel />
 
-      <main className="max-w-7xl mx-auto px-4 py-16 md:py-24">
-        <div className="flex flex-col items-center text-center mb-16 md:mb-24">
+      <main className="max-w-7xl mx-auto px-0 md:px-4 py-12 md:py-24">
+        <div className="flex flex-col items-center text-center mb-12 md:mb-24 px-4">
           <span className="text-deep-crimson font-black text-[8px] md:text-[10px] tracking-[0.5em] uppercase mb-4">The Selection ✨</span>
-          <h2 className="text-4xl md:text-7xl font-black serif tracking-tight mb-8 leading-[0.8] italic">Editor's Pick</h2>
+          <h2 className="text-4xl md:text-7xl font-black serif tracking-tight mb-6 leading-[0.8] italic">Editor's Pick</h2>
           <div className="w-16 md:w-20 h-1 bg-deep-crimson rounded-full" />
         </div>
 
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-x-8 gap-y-12 md:gap-y-16">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-0 md:gap-x-8 gap-y-0 md:gap-y-16">
           {products.slice(0, 8).map(product => (
             <ProductCard key={product.id} product={{ ...product, isNew: true }} />
           ))}
