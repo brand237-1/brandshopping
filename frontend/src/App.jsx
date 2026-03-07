@@ -150,7 +150,13 @@ const SearchBar = ({ onSearch }) => {
           >
             {suggestions.map(p => (
               <div key={p.id} className="flex items-center gap-4 p-3 hover:bg-gray-50 cursor-pointer border-b last:border-0" onClick={() => setShow(false)}>
-                <img src={`${API_BASE_URL || ''}${p.imagePath}`} className="w-10 h-10 object-cover rounded" alt="" />
+                <img
+                  src={`${API_BASE_URL || ''}${p.imagePath}`}
+                  className="w-10 h-10 object-cover rounded"
+                  alt=""
+                  loading="lazy"
+                  decoding="async"
+                />
                 <div>
                   <p className="text-[10px] font-bold uppercase tracking-tight">{p.name}</p>
                   <p className="text-[10px] text-crimson font-bold">${p.price.toFixed(2)}</p>
@@ -362,6 +368,8 @@ const HeroCarousel = () => {
             src={slides[idx].image}
             className="w-full h-full object-cover animate-slow-zoom"
             alt=""
+            loading="eager"
+            priority="true"
           />
           <div className="absolute inset-0 z-20 flex flex-col items-center justify-center text-center px-4">
             <motion.p
@@ -444,6 +452,8 @@ const ProductCard = ({ product }) => {
           src={imgUrl}
           className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
           alt={product.name}
+          loading="lazy"
+          decoding="async"
           onError={(e) => { e.target.src = "https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=800"; }}
         />
 
@@ -1139,7 +1149,13 @@ const HomePage = () => {
             className="relative h-[500px] md:h-[700px] group overflow-hidden rounded-[2rem] md:rounded-[2.5rem] cursor-pointer shadow-2xl"
             onClick={(e) => handleRestrictedClick(e, '/collection/Clothing')}
           >
-            <img src="/pictures/posts/luxury-silk-dress.png" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-[3s]" alt="" />
+            <img
+              src="/pictures/posts/luxury-silk-dress.png"
+              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-[3s]"
+              alt=""
+              loading="lazy"
+              decoding="async"
+            />
             <div className="absolute inset-0 bg-brand-black/40 group-hover:bg-brand-black/30 transition-colors flex flex-col justify-end p-8 md:p-12 text-white">
               <span className="font-bold tracking-[0.5em] text-[8px] md:text-[10px] uppercase mb-4">Exclusive Drop 🛍️</span>
               <h3 className="text-4xl md:text-5xl font-black serif italic mb-4 md:6 leading-none">Evening <br /> Elegance</h3>
@@ -1153,7 +1169,13 @@ const HomePage = () => {
             className="relative h-[500px] md:h-[700px] group overflow-hidden rounded-[2rem] md:rounded-[2.5rem] cursor-pointer shadow-2xl md:mt-24"
             onClick={(e) => handleRestrictedClick(e, '/collection/Accessories')}
           >
-            <img src="/pictures/posts/designer-wool-coat.png" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-[3s]" alt="" />
+            <img
+              src="/pictures/posts/designer-wool-coat.png"
+              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-[3s]"
+              alt=""
+              loading="lazy"
+              decoding="async"
+            />
             <div className="absolute inset-0 bg-brand-black/40 group-hover:bg-brand-black/30 transition-colors flex flex-col justify-end p-8 md:p-12 text-white">
               <span className="font-bold tracking-[0.5em] text-[8px] md:text-[10px] uppercase mb-4">Modern Classic 🌿</span>
               <h3 className="text-4xl md:text-5xl font-black serif italic mb-4 md:mb-6 leading-none">Timeless <br /> Layers</h3>
