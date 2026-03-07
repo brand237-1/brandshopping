@@ -168,32 +168,49 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { user, logout } = useAuth();
   const { cart } = useCart();
-  const items = ['New Arrivals', 'Clothing', 'Shoes', 'Accessories', 'Home & Gift', 'Gift Cards'];
+  const location = useLocation();
+
+  const items = [
+    { name: '✨ New Arrivals', path: '/collection/New Arrivals' },
+    { name: '🧥 Clothing', path: '/collection/Clothing' },
+    { name: '👠 Shoes', path: '/collection/Shoes' },
+    { name: '💍 Accessories', path: '/collection/Accessories' },
+    { name: '🏠 Home & Gift', path: '/collection/Home & Gift' },
+    { name: '💳 Gift Cards', path: '/collection/Gift Cards' }
+  ];
+
+  const adminItem = { name: '👑 Admin Vault', path: '/admin/login' };
 
   return (
-    <nav className="glass sticky top-0 z-40 border-b border-white/20">
-      <div className="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between gap-8">
-        <div className="flex items-center gap-8">
-          <button className="md:hidden text-brand-black" onClick={() => setIsOpen(!isOpen)}>
+    <nav className="glass sticky top-0 z-40 border-b border-white/20 transition-all duration-500">
+      <div className="max-w-7xl mx-auto px-4 h-16 md:h-20 flex items-center justify-between gap-4 md:gap-8">
+        <div className="flex items-center gap-4 md:gap-8">
+          <button
+            className="md:hidden text-brand-black p-2 -ml-2 hover:bg-black/5 rounded-full transition-colors"
+            onClick={() => setIsOpen(!isOpen)}
+            aria-label="Toggle Menu"
+          >
             {isOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
-          <Link to="/" className="flex items-center gap-2 group transition-all">
-            <div className="w-10 h-10 bg-deep-crimson rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
-              <span className="text-white font-black text-xl italic">B</span>
+
+          <Link to="/" className="flex items-center gap-2 group transition-all" onClick={() => setIsOpen(false)}>
+            <div className="w-8 h-8 md:w-10 md:h-10 bg-deep-crimson rounded-lg md:rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+              <span className="text-white font-black text-lg md:text-xl italic">B</span>
             </div>
             <div className="flex flex-col -gap-1">
-              <span className="text-xl font-black tracking-tighter uppercase leading-none">Brandshoping✨</span>
-              <span className="text-[8px] font-bold tracking-[0.4em] uppercase opacity-50 ml-0.5">Limited Luxury</span>
+              <span className="text-base md:text-xl font-black tracking-tighter uppercase leading-none">Brandshoping✨</span>
+              <span className="text-[6px] md:text-[8px] font-bold tracking-[0.4em] uppercase opacity-50 ml-0.5">Limited Luxury</span>
             </div>
           </Link>
+
           <div className="hidden md:flex gap-6 items-center">
             {items.map(item => (
               <Link
-                key={item}
-                to={`/collection/${item}`}
-                className="text-[10px] font-bold uppercase tracking-widest hover:text-deep-crimson hover:translate-y-[-1px] transition-all whitespace-nowrap"
+                key={item.name}
+                to={item.path}
+                className={`text-[10px] font-bold uppercase tracking-widest hover:text-deep-crimson transition-all whitespace-nowrap ${location.pathname === item.path ? 'text-deep-crimson decoration-2 underline underline-offset-4' : ''}`}
               >
-                {item}
+                {item.name}
               </Link>
             ))}
           </div>
@@ -201,45 +218,105 @@ const Navbar = () => {
 
         <SearchBar />
 
-        <div className="flex items-center gap-4 flex-shrink-0">
-          {user ? (
-            <div className="flex items-center gap-4">
-              <Link to="/profile" className="flex items-center gap-1 hover:text-crimson transition-colors">
-                <UserIcon className="w-5 h-5" />
-                <span className="text-[10px] font-black uppercase hidden lg:block">{user.username}</span>
-              </Link>
-              <button onClick={logout} className="hover:text-crimson transition-colors">
-                <LogOut className="w-4 h-4" />
-              </button>
-            </div>
-          ) : (
-            <div className="flex items-center gap-3">
-              <Link to="/admin/login" className="bg-black text-white px-3 py-1 rounded text-[10px] font-black uppercase tracking-widest hover:bg-crimson transition-colors">VIP</Link>
-              <Link to="/login" className="text-[10px] font-black uppercase tracking-widest hover:text-crimson">Login</Link>
-              <span className="text-gray-300">|</span>
-              <Link to="/signup" className="text-[10px] font-black uppercase tracking-widest hover:text-crimson">Join</Link>
-            </div>
-          )}
-          <Link to="/profile" className="relative cursor-pointer group">
-            <ShoppingBag className="w-5 h-5 group-hover:text-crimson" />
-            <span className="absolute -top-2 -right-2 bg-crimson text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">
+        <div className="flex items-center gap-3 md:gap-4 flex-shrink-0">
+          <div className="hidden sm:flex items-center gap-3">
+            {user ? (
+              <div className="flex items-center gap-3 border-r border-gray-100 pr-3 mr-1">
+                <Link to="/profile" className="flex items-center gap-1 hover:text-deep-crimson transition-colors">
+                  <UserIcon className="w-4 h-4 md:w-5 md:h-5" />
+                  <span className="text-[10px] font-black uppercase hidden lg:block tracking-tighter">{user.username}</span>
+                </Link>
+                <button onClick={logout} className="hover:text-deep-crimson transition-all" aria-label="Logout">
+                  <LogOut className="w-4 h-4" />
+                </button>
+              </div>
+            ) : (
+              <div className="flex items-center gap-4 border-r border-gray-100 pr-4 mr-1">
+                <Link to="/login" className="text-[10px] font-black uppercase tracking-widest hover:text-deep-crimson transition-colors">Login</Link>
+                <Link to="/signup" className="text-[10px] font-black uppercase tracking-widest hover:text-deep-crimson transition-colors">Join</Link>
+              </div>
+            )}
+          </div>
+
+          <Link to="/profile" className="relative cursor-pointer group p-2 rounded-full hover:bg-black/5 transition-colors">
+            <ShoppingBag className="w-5 h-5 md:w-6 md:h-6 group-hover:text-deep-crimson transition-colors" />
+            <span className="absolute top-0 right-0 bg-deep-crimson text-white text-[8px] w-4 h-4 rounded-full flex items-center justify-center font-black shadow-lg">
               {cart.reduce((sum, item) => sum + item.quantity, 0)}
             </span>
           </Link>
         </div>
       </div>
-      {/* Mobile Menu */}
+
+      {/* Mobile Menu Dropdown */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="absolute top-20 left-0 w-full bg-white shadow-xl p-6 md:hidden z-50 flex flex-col gap-4"
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            className="md:hidden bg-white/95 backdrop-blur-xl border-b border-gray-100 overflow-hidden shadow-2xl"
           >
-            {items.map(item => (
-              <Link key={item} to={`/collection/${item}`} className="text-lg font-bold uppercase" onClick={() => setIsOpen(false)}>{item}</Link>
-            ))}
+            <div className="container-mobile py-8 flex flex-col gap-1">
+              {items.map((item, idx) => (
+                <motion.div
+                  key={item.name}
+                  initial={{ x: -20, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  transition={{ delay: idx * 0.05 }}
+                >
+                  <Link
+                    to={item.path}
+                    className={`block py-4 px-6 rounded-2xl text-xs font-black uppercase tracking-[0.2em] transition-all flex items-center justify-between group ${location.pathname === item.path ? 'bg-pink-accent text-deep-crimson shadow-sm' : 'hover:bg-off-white'}`}
+                    onClick={() => setIsOpen(false)}
+                  >
+                    {item.name}
+                    <ArrowRight size={14} className="opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
+                  </Link>
+                </motion.div>
+              ))}
+
+              <div className="h-[1px] bg-gray-50 my-4 mx-6" />
+
+              <motion.div
+                initial={{ x: -20, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ delay: items.length * 0.05 }}
+              >
+                <Link
+                  to="/profile"
+                  className="block py-4 px-6 rounded-2xl text-xs font-black uppercase tracking-[0.2em] hover:bg-off-white flex items-center justify-between"
+                  onClick={() => setIsOpen(false)}
+                >
+                  <span>👤 My Essence (Profile)</span>
+                  <ArrowRight size={14} />
+                </Link>
+              </motion.div>
+
+              <motion.div
+                initial={{ x: -20, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ delay: (items.length + 1) * 0.05 }}
+              >
+                <Link
+                  to={adminItem.path}
+                  className="mt-4 block py-5 px-6 rounded-3xl bg-brand-black text-white text-xs font-black uppercase tracking-[0.3em] text-center shadow-xl shadow-black/20 group"
+                  onClick={() => setIsOpen(false)}
+                >
+                  {adminItem.name} ✨
+                </Link>
+              </motion.div>
+
+              {user && (
+                <motion.button
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  onClick={() => { logout(); setIsOpen(false); }}
+                  className="mt-8 text-[9px] font-black uppercase tracking-widest text-brand-gray/40 text-center w-full hover:text-deep-crimson transition-colors"
+                >
+                  Sign Out of Sanctuary
+                </motion.button>
+              )}
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -261,7 +338,7 @@ const HeroCarousel = () => {
   }, [slides.length]);
 
   return (
-    <section className="relative h-[90vh] overflow-hidden bg-brand-black">
+    <section className="relative h-[70vh] md:h-[90vh] overflow-hidden bg-brand-black">
       <AnimatePresence mode="wait">
         <motion.div
           key={idx}
@@ -271,7 +348,7 @@ const HeroCarousel = () => {
           transition={{ duration: 1.5, ease: "easeInOut" }}
           className="absolute inset-0"
         >
-          <div className="absolute inset-0 bg-gradient-to-t from-brand-black/80 via-transparent to-brand-black/20 z-10" />
+          <div className="absolute inset-0 bg-gradient-to-t from-brand-black/90 via-black/20 to-brand-black/40 z-10" />
           <motion.img
             src={slides[idx].image}
             className="w-full h-full object-cover animate-slow-zoom"
@@ -282,7 +359,7 @@ const HeroCarousel = () => {
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.5, duration: 0.8 }}
-              className="text-white/80 font-bold tracking-[0.5em] text-[10px] uppercase mb-4"
+              className="text-white/80 font-bold tracking-[0.5em] text-[8px] md:text-[10px] uppercase mb-4"
             >
               {slides[idx].category} ✨
             </motion.p>
@@ -290,7 +367,7 @@ const HeroCarousel = () => {
               initial={{ y: 30, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.7, duration: 1 }}
-              className="text-white text-6xl md:text-9xl font-black tracking-tighter serif mb-8 leading-[0.9]"
+              className="text-white text-4xl sm:text-6xl md:text-9xl font-black tracking-tighter serif mb-8 leading-[0.9]"
             >
               {slides[idx].title.split(' ').map((word, i) => (
                 <span key={i} className="block last:text-deep-crimson italic">{word}</span>
@@ -303,7 +380,7 @@ const HeroCarousel = () => {
             >
               <Link
                 to="/collection/New Arrivals"
-                className="group relative inline-flex items-center gap-4 bg-white text-brand-black px-10 py-5 rounded-full font-black text-xs uppercase tracking-widest hover:bg-deep-crimson hover:text-white transition-all overflow-hidden shadow-2xl"
+                className="group relative inline-flex items-center gap-4 bg-white text-brand-black px-8 md:px-10 py-4 md:py-5 rounded-full font-black text-[10px] md:text-xs uppercase tracking-widest hover:bg-deep-crimson hover:text-white transition-all overflow-hidden shadow-2xl"
               >
                 <span className="relative z-10 flex items-center gap-2 text-brand-black group-hover:text-white">Explore Drop 🛍️ <ArrowRight size={16} /></span>
                 <div className="absolute inset-0 bg-white group-hover:bg-deep-crimson transition-colors" />
@@ -313,12 +390,12 @@ const HeroCarousel = () => {
         </motion.div>
       </AnimatePresence>
 
-      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-30 flex gap-3">
+      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-30 flex gap-2 md:gap-3">
         {slides.map((_, i) => (
           <button
             key={i}
             onClick={() => setIdx(i)}
-            className={`h-1 transition-all duration-500 rounded-full ${i === idx ? 'w-12 bg-white' : 'w-4 bg-white/30 hover:bg-white/50'}`}
+            className={`h-1 transition-all duration-500 rounded-full ${i === idx ? 'w-8 md:w-12 bg-white' : 'w-2 md:w-4 bg-white/30 hover:bg-white/50'}`}
           />
         ))}
       </div>
@@ -331,94 +408,116 @@ const ProductCard = ({ product }) => {
   const { addToCart } = useCart();
   const { user } = useAuth();
   const navigate = useNavigate();
-  const imagePath = product.imagePath || '';
-  const imgUrl = imagePath.startsWith('http') ? imagePath : `${API_BASE_URL || ''}${imagePath}`;
-
-  const structuredData = {
-    "@context": "https://schema.org/",
-    "@type": "Product",
-    "name": product.name,
-    "image": imgUrl,
-    "description": product.description,
-    "brand": { "@type": "Brand", "name": product.brand || 'BrandshoppingLTD' },
-    "offers": {
-      "@type": "Offer",
-      "priceCurrency": "USD",
-      "price": product.price,
-      "priceValidUntil": "2026-12-31",
-      "availability": "https://schema.org/InStock"
-    }
-  };
-
-  const sizes = product.sizes ? JSON.parse(product.sizes) : [];
+  const imgUrl = product.imagePath?.startsWith('http') ? product.imagePath : `${API_BASE_URL || ''}${product.imagePath}`;
 
   return (
     <motion.div
       layout
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
-      whileHover={{ y: -8 }}
-      className="group relative flex flex-col cursor-pointer bg-white rounded-2xl overflow-hidden soft-shadow border border-gray-100/50"
+      className="group relative flex flex-col cursor-pointer bg-white rounded-2xl md:rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-gray-50 h-full"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       onClick={() => user ? navigate(`/product/${product.id}`) : navigate('/login')}
     >
-      <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
       <div className="relative aspect-[3/4] overflow-hidden bg-gray-50">
+        <div className="absolute top-4 left-4 z-20 flex flex-col gap-2">
+          <span className="bg-white/90 backdrop-blur px-3 py-1 rounded-full text-[8px] font-black tracking-widest uppercase text-brand-black shadow-sm flex items-center gap-1.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-deep-crimson animate-pulse" /> ✨ NEW DROP
+          </span>
+        </div>
+
+        <button className="absolute top-4 right-4 z-20 w-8 h-8 rounded-full bg-white/90 backdrop-blur flex items-center justify-center text-brand-gray/40 hover:text-deep-crimson transition-colors shadow-sm active:scale-90">
+          <Heart size={14} />
+        </button>
+
         <motion.img
           src={imgUrl}
           className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
           alt={product.name}
           onError={(e) => { e.target.src = "https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=800"; }}
         />
-        <div className="absolute top-4 right-4 z-10">
-          <button
-            className="w-10 h-10 bg-white/80 backdrop-blur-md rounded-full flex items-center justify-center text-gray-400 hover:text-deep-crimson transition-colors shadow-sm"
-            onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
-          >
-            <Heart size={18} />
-          </button>
-        </div>
-        {product.isNew && (
-          <div className="absolute top-4 left-4 z-10 bg-deep-crimson text-white text-[8px] font-black px-3 py-1.5 rounded-full tracking-widest uppercase shadow-lg">
-            New Arrival ✨
-          </div>
-        )}
-        <AnimatePresence>
-          {hovered && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 20 }}
-              className="absolute bottom-4 left-4 right-4 z-20"
-            >
-              <button className="w-full bg-brand-black/90 backdrop-blur-md text-white text-[10px] font-black uppercase tracking-widest py-4 rounded-xl shadow-2xl hover:bg-deep-crimson transition-colors border border-white/10">
-                View & Buy 🛍️
-              </button>
-            </motion.div>
-          )}
-        </AnimatePresence>
+
+        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
       </div>
 
-      <div className="p-5 flex flex-col gap-2 bg-white">
-        <div className="flex justify-between items-start">
-          <h3 className="text-sm font-black tracking-tight serif group-hover:text-deep-crimson transition-colors truncate pr-2">
-            {product.name}
-          </h3>
-          <p className="text-xs font-black text-deep-crimson tracking-tighter shrink-0">
-            ${product.price ? Number(product.price).toFixed(2) : '0.00'}
-          </p>
+      <div className="p-4 md:p-6 flex-1 flex flex-col">
+        <div className="flex justify-between items-start mb-2">
+          <p className="text-[8px] md:text-[10px] font-black uppercase tracking-[0.2em] text-brand-gray/60">{product.brand || 'Elite Luxury'}</p>
+          <div className="flex gap-1 text-deep-crimson">
+            {[...Array(5)].map((_, i) => <span key={i} className="text-[8px]">★</span>)}
+          </div>
         </div>
-        <div className="flex items-center justify-between">
-          <p className="text-[10px] text-brand-gray font-medium uppercase tracking-widest opacity-60">
-            {JSON.parse(product.colors || '["Refined"]').length} Colors 🌈
-          </p>
-          <p className="text-[10px] text-brand-gray font-medium uppercase tracking-widest opacity-60 italic">
-            {sizes.length} Sizes
-          </p>
+
+        <h4 className="font-black serif italic text-lg md:text-xl mb-3 tracking-tight group-hover:text-deep-crimson transition-colors">{product.name}</h4>
+
+        <div className="mt-auto flex items-end justify-between">
+          <div className="space-y-1">
+            <p className="text-xl md:text-2xl font-black tracking-tighter text-brand-black">${product.price.toFixed(2)}</p>
+            <p className="text-[8px] font-bold text-brand-gray/40 uppercase tracking-widest">Available in {product.colors ? JSON.parse(product.colors).length : 2} Shades 🌈</p>
+          </div>
+
+          <button
+            onClick={(e) => { e.stopPropagation(); addToCart(product); }}
+            className="w-10 h-10 rounded-xl bg-off-white hover:bg-deep-crimson hover:text-white transition-all duration-300 flex items-center justify-center shadow-inner group/btn"
+          >
+            <ShoppingBag size={16} className="group-hover/btn:scale-110 transition-transform" />
+          </button>
         </div>
       </div>
     </motion.div>
+  );
+};
+<div className="absolute top-4 right-4 z-10">
+  <button
+    className="w-10 h-10 bg-white/80 backdrop-blur-md rounded-full flex items-center justify-center text-gray-400 hover:text-deep-crimson transition-colors shadow-sm"
+    onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
+  >
+    <Heart size={18} />
+  </button>
+</div>
+{
+  product.isNew && (
+    <div className="absolute top-4 left-4 z-10 bg-deep-crimson text-white text-[8px] font-black px-3 py-1.5 rounded-full tracking-widest uppercase shadow-lg">
+      New Arrival ✨
+    </div>
+  )
+}
+<AnimatePresence>
+  {hovered && (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: 20 }}
+      className="absolute bottom-4 left-4 right-4 z-20"
+    >
+      <button className="w-full bg-brand-black/90 backdrop-blur-md text-white text-[10px] font-black uppercase tracking-widest py-4 rounded-xl shadow-2xl hover:bg-deep-crimson transition-colors border border-white/10">
+        View & Buy 🛍️
+      </button>
+    </motion.div>
+  )}
+</AnimatePresence>
+      </div >
+
+  <div className="p-5 flex flex-col gap-2 bg-white">
+    <div className="flex justify-between items-start">
+      <h3 className="text-sm font-black tracking-tight serif group-hover:text-deep-crimson transition-colors truncate pr-2">
+        {product.name}
+      </h3>
+      <p className="text-xs font-black text-deep-crimson tracking-tighter shrink-0">
+        ${product.price ? Number(product.price).toFixed(2) : '0.00'}
+      </p>
+    </div>
+    <div className="flex items-center justify-between">
+      <p className="text-[10px] text-brand-gray font-medium uppercase tracking-widest opacity-60">
+        {JSON.parse(product.colors || '["Refined"]').length} Colors 🌈
+      </p>
+      <p className="text-[10px] text-brand-gray font-medium uppercase tracking-widest opacity-60 italic">
+        {sizes.length} Sizes
+      </p>
+    </div>
+  </div>
+    </motion.div >
   );
 };
 
@@ -1050,45 +1149,45 @@ const HomePage = () => {
       </Helmet>
       <HeroCarousel />
 
-      <main className="max-w-7xl mx-auto px-4 py-24">
-        <div className="flex flex-col items-center text-center mb-24">
-          <span className="text-deep-crimson font-black text-[10px] tracking-[0.5em] uppercase mb-4">The Selection ✨</span>
+      <main className="max-w-7xl mx-auto px-4 py-16 md:py-24">
+        <div className="flex flex-col items-center text-center mb-16 md:mb-24">
+          <span className="text-deep-crimson font-black text-[8px] md:text-[10px] tracking-[0.5em] uppercase mb-4">The Selection ✨</span>
           <h2 className="text-4xl md:text-7xl font-black serif tracking-tight mb-8 leading-[0.8] italic">Editor's Pick</h2>
-          <div className="w-20 h-1 bg-deep-crimson rounded-full" />
+          <div className="w-16 md:w-20 h-1 bg-deep-crimson rounded-full" />
         </div>
 
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-16">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-x-8 gap-y-12 md:gap-y-16">
           {products.slice(0, 8).map(product => (
             <ProductCard key={product.id} product={{ ...product, isNew: true }} />
           ))}
         </div>
 
-        <div className="mt-40 grid grid-cols-1 md:grid-cols-2 gap-12">
+        <div className="mt-24 md:mt-40 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
           <motion.div
             whileHover={{ y: -10 }}
-            className="relative h-[700px] group overflow-hidden rounded-[2.5rem] cursor-pointer shadow-2xl"
+            className="relative h-[500px] md:h-[700px] group overflow-hidden rounded-[2rem] md:rounded-[2.5rem] cursor-pointer shadow-2xl"
             onClick={(e) => handleRestrictedClick(e, '/collection/Clothing')}
           >
             <img src="/pictures/posts/luxury-silk-dress.png" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-[3s]" alt="" />
-            <div className="absolute inset-0 bg-brand-black/40 group-hover:bg-brand-black/30 transition-colors flex flex-col justify-end p-12 text-white">
-              <span className="font-bold tracking-[0.5em] text-[10px] uppercase mb-4">Exclusive Drop 🛍️</span>
-              <h3 className="text-5xl font-black serif italic mb-6 leading-none">Evening <br /> Elegance</h3>
-              <p className="text-sm font-medium text-white/80 max-w-sm mb-10 leading-relaxed">Discover our hand-picked selection of evening wear crafted from the finest premium silks.</p>
-              <button className="bg-white text-brand-black px-12 py-5 rounded-full font-black text-[10px] uppercase tracking-widest w-fit hover:bg-deep-crimson hover:text-white transition-all shadow-2xl">Shop Edit ✨</button>
+            <div className="absolute inset-0 bg-brand-black/40 group-hover:bg-brand-black/30 transition-colors flex flex-col justify-end p-8 md:p-12 text-white">
+              <span className="font-bold tracking-[0.5em] text-[8px] md:text-[10px] uppercase mb-4">Exclusive Drop 🛍️</span>
+              <h3 className="text-4xl md:text-5xl font-black serif italic mb-4 md:6 leading-none">Evening <br /> Elegance</h3>
+              <p className="text-xs md:text-sm font-medium text-white/80 max-w-sm mb-8 md:mb-10 leading-relaxed">Discover our hand-picked selection of evening wear crafted from the finest premium silks.</p>
+              <button className="bg-white text-brand-black px-10 md:px-12 py-4 md:py-5 rounded-full font-black text-[8px] md:text-[10px] uppercase tracking-widest w-fit hover:bg-deep-crimson hover:text-white transition-all shadow-2xl">Shop Edit ✨</button>
             </div>
           </motion.div>
 
           <motion.div
             whileHover={{ y: -10 }}
-            className="relative h-[700px] group overflow-hidden rounded-[2.5rem] cursor-pointer shadow-2xl md:mt-24"
+            className="relative h-[500px] md:h-[700px] group overflow-hidden rounded-[2rem] md:rounded-[2.5rem] cursor-pointer shadow-2xl md:mt-24"
             onClick={(e) => handleRestrictedClick(e, '/collection/Accessories')}
           >
             <img src="/pictures/posts/designer-wool-coat.png" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-[3s]" alt="" />
-            <div className="absolute inset-0 bg-brand-black/40 group-hover:bg-brand-black/30 transition-colors flex flex-col justify-end p-12 text-white">
-              <span className="font-bold tracking-[0.5em] text-[10px] uppercase mb-4">Modern Classic 🌿</span>
-              <h3 className="text-5xl font-black serif italic mb-6 leading-none">Timeless <br /> Layers</h3>
-              <p className="text-sm font-medium text-white/80 max-w-sm mb-10 leading-relaxed">Explore luxury outerwear designed for both warmth and effortless everyday sophistication.</p>
-              <button className="bg-white text-brand-black px-12 py-5 rounded-full font-black text-[10px] uppercase tracking-widest w-fit hover:bg-deep-crimson hover:text-white transition-all shadow-2xl">View Collection 🛍️</button>
+            <div className="absolute inset-0 bg-brand-black/40 group-hover:bg-brand-black/30 transition-colors flex flex-col justify-end p-8 md:p-12 text-white">
+              <span className="font-bold tracking-[0.5em] text-[8px] md:text-[10px] uppercase mb-4">Modern Classic 🌿</span>
+              <h3 className="text-4xl md:text-5xl font-black serif italic mb-4 md:mb-6 leading-none">Timeless <br /> Layers</h3>
+              <p className="text-xs md:text-sm font-medium text-white/80 max-w-sm mb-8 md:mb-10 leading-relaxed">Explore luxury outerwear designed for both warmth and effortless everyday sophistication.</p>
+              <button className="bg-white text-brand-black px-10 md:px-12 py-4 md:py-5 rounded-full font-black text-[8px] md:text-[10px] uppercase tracking-widest w-fit hover:bg-deep-crimson hover:text-white transition-all shadow-2xl">View Collection 🛍️</button>
             </div>
           </motion.div>
         </div>

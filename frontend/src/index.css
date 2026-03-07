@@ -11,11 +11,67 @@
     --color-brand-gray: #71717A;
 }
 
+/* Global Refinements */
+* {
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
 :root {
     font-family: 'Outfit', system-ui, sans-serif;
     background-color: var(--color-off-white);
     color: var(--color-brand-black);
     -webkit-font-smoothing: antialiased;
+    /* Responsive base spacing */
+    --padding-mobile: 1rem;
+    --padding-desktop: 2rem;
+}
+
+/* Mobile-First Layout Core */
+html,
+body {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    /* Prevent horizontal scroll on small devices */
+}
+
+img,
+video,
+canvas,
+svg {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+.container-mobile {
+    width: 100%;
+    padding-left: var(--padding-mobile);
+    padding-right: var(--padding-mobile);
+    margin-left: auto;
+    margin-right: auto;
+}
+
+@media (min-width: 360px) {
+    .container-mobile {
+        max-width: 360px;
+    }
+}
+
+@media (min-width: 768px) {
+    .container-mobile {
+        max-width: 768px;
+        padding-left: var(--padding-desktop);
+        padding-right: var(--padding-desktop);
+    }
+}
+
+@media (min-width: 1280px) {
+    .container-mobile {
+        max-width: 1280px;
+    }
 }
 
 h1,
@@ -47,11 +103,6 @@ h3,
     background-color: var(--color-soft-pink);
 }
 
-/* Smooth transitions for everything */
-* {
-    transition: all 0.3s ease;
-}
-
 /* Refined animations */
 @keyframes slowZoom {
     0% {
@@ -81,4 +132,16 @@ h3,
 
 .animate-slide-up {
     animation: slideUpFade 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Mobile Dropdown Refinements */
+.mobile-menu-enter {
+    opacity: 0;
+    transform: translateY(-10px);
+}
+
+.mobile-menu-enter-active {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 300ms, transform 300ms;
 }
